@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
+
+body {
+  font-family: 'Azeret Mono', monospace;
+}
+
+.paytone-one-regular {
+  font-family: 'Paytone One', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pic-auto {
+  width: 100%;
+  height: 100%;
+  /* vertical-align: top; */
+  object-fit: cover;
+}
+
+.custom-select {
+  @apply max-h-[52px] bg-white;
+  padding: 12px 16px;
+  border: 2px solid #000;
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-select-options {
+  @apply absolute top-0 flex w-full flex-col bg-white shadow-sm z-20;
+  border: 2px solid #000;
+}
+
+.custom-select-options .option {
+  @apply px-4 py-3;
+}
+.custom-select-options .option:hover {
+  background: #efece7;
+}
+
+.option.option-selected {
+  background: #efece7;
+}
+
+input:focus {
+  outline: none; /* 移除預設的輪廓 */
+  box-shadow: none; /* 移除預設的陰影效果 */
+  /* border-color: inherit; 保持邊框顏色不變 */
+}
+
+.custom-search-input {
+  @apply flex max-h-[52px] border-2 border-black bg-white;
+}
+
+.custom-search-input input {
+  @apply w-full px-3 py-4;
+}
+
+.custom-input {
+  @apply max-h-[52px] border-2 border-black bg-white w-full px-3 py-4;
+}
+
+.custom-area {
+  @apply border-2 border-black bg-white w-full px-3 py-4;
+}
+
+.custom-search-input button {
+  @apply flex transform items-center justify-center border-l-2 border-black p-3 text-white duration-200;
+  background-color: #03438d;
+}
+
+.custom-search-input button:hover {
+  background-color: #eec32a;
+}
+
+/* * 主要色 */
+.text-primary {
+  color: #03438d;
+}
+
+.bg-primary {
+  background-color: #03438d;
+}
+
+.border-primary {
+  border-color: #03438d;
+}
+
+.avatar {
+  @apply overflow-hidden rounded-full border-2 border-black;
+}
+
+.custom-avatar-clear {
+  @apply overflow-hidden rounded-full;
+}
+
+.custom-b-shadow {
+  box-shadow: 0px 3px 0px #000400;
+}
+
+.custom-border-2 {
+  @apply border-2 border-black;
+}
+
+.custom-btn-primary {
+  @apply flex transform items-center justify-center border-2 border-black p-3 text-white duration-200 font-bold;
+  background-color: #03438d;
+  box-shadow: -2px 2px 0px #000400;
+}
+.custom-btn-primary:hover {
+  background-color: #eec32a;
+  color: #000;
+}
+
+.custom-btn-secondary {
+  @apply flex transform items-center justify-center border-2 border-black p-3 duration-200 rounded-lg font-bold;
+  background-color: #eec32a;
+  box-shadow: -2px 2px 0px #000400;
+}
+
+.custom-btn-disabled {
+  @apply flex transform items-center justify-center border-2 border-black p-3 duration-200 rounded-lg font-bold cursor-not-allowed bg-gray-400 text-gray-700;
+  box-shadow: -2px 2px 0px #000400;
+}
+
+.custom-btn-secondary:hover{
+  opacity: 0.8;
+}
