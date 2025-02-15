@@ -3,6 +3,7 @@ import ckeditor5 from '@ckeditor/vite-plugin-ckeditor5'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
@@ -10,12 +11,14 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/sitemap'
   ],
+
   sitemap: {
     // 您的網站根 URL
     hostname: 'https://community-web-4l2.pages.dev',
     // 您希望在 sitemap 中包含的路徑
     routes: ['/', '/login']
   },
+  plugins: ['~/utils/i18n.ts'],
 
   imports: {
     dirs: [
@@ -28,8 +31,12 @@ export default defineNuxtConfig({
       'stores'
     ]
   },
+
   css: ['~/assets/css/main.css'],
+
   vite: {
     plugins: [ckeditor5({ theme: require.resolve('@ckeditor/ckeditor5-theme-lark') })]
-  }
+  },
+
+  compatibilityDate: '2025-02-12'
 })

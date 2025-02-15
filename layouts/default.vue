@@ -5,7 +5,7 @@ const store = APIStore()
 
 <template>
   <main class="relative min-h-screen w-full">
-    <navbar />
+    <NewNavbar />
     <div class="page-wrapper">
       <div class="grow">
         <NuxtPage />
@@ -26,6 +26,7 @@ main {
 .page-wrapper {
   max-width: 1200px;
   width: 100%;
+  min-height: 82vh;
   margin: 0 auto;
   display: flex;
   gap: 28px;

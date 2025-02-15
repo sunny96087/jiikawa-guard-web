@@ -27,7 +27,7 @@ body {
 }
 
 .custom-select-options {
-  @apply absolute top-0 flex w-full flex-col bg-white shadow-sm z-20;
+  @apply absolute top-0 z-20 flex w-full flex-col bg-white shadow-sm;
   border: 2px solid #000;
 }
 
@@ -57,11 +57,11 @@ input:focus {
 }
 
 .custom-input {
-  @apply max-h-[52px] border-2 border-black bg-white w-full px-3 py-4;
+  @apply max-h-[52px] w-full border-2 border-black bg-white px-3 py-4;
 }
 
 .custom-area {
-  @apply border-2 border-black bg-white w-full px-3 py-4;
+  @apply w-full border-2 border-black bg-white px-3 py-4;
 }
 
 .custom-search-input button {
@@ -71,6 +71,15 @@ input:focus {
 
 .custom-search-input button:hover {
   background-color: #eec32a;
+}
+
+/* * 滑鼠移入 hover */
+.cus-hover-auto {
+  @apply transition-opacity duration-200 hover:opacity-80;
+}
+
+.cus-hover {
+  @apply transition-all duration-200;
 }
 
 /* * 主要色 */
@@ -103,7 +112,7 @@ input:focus {
 }
 
 .custom-btn-primary {
-  @apply flex transform items-center justify-center border-2 border-black p-3 text-white duration-200 font-bold;
+  @apply flex transform items-center justify-center border-2 border-black p-3 font-bold text-white duration-200;
   background-color: #03438d;
   box-shadow: -2px 2px 0px #000400;
 }
@@ -113,16 +122,16 @@ input:focus {
 }
 
 .custom-btn-secondary {
-  @apply flex transform items-center justify-center border-2 border-black p-3 duration-200 rounded-lg font-bold;
+  @apply flex transform items-center justify-center rounded-lg border-2 border-black p-3 font-bold duration-200;
   background-color: #eec32a;
   box-shadow: -2px 2px 0px #000400;
 }
 
 .custom-btn-disabled {
-  @apply flex transform items-center justify-center border-2 border-black p-3 duration-200 rounded-lg font-bold cursor-not-allowed bg-gray-400 text-gray-700;
+  @apply flex transform cursor-not-allowed items-center justify-center rounded-lg border-2 border-black bg-gray-400 p-3 font-bold text-gray-700 duration-200;
   box-shadow: -2px 2px 0px #000400;
 }
 
-.custom-btn-secondary:hover{
+.custom-btn-secondary:hover {
   opacity: 0.8;
 }
