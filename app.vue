@@ -13,24 +13,26 @@
 
 <script setup>
 useHead({
-  title: '社群網站',
-  titleTemplate: (title) => (title ? `${title} - Chat!` : 'Chat!'),
+  title: '新版吉伊卡哇鑒定網站',
+  // titleTemplate: (title) => (title ? `${title} - 新版吉伊卡哇鑒定網站` : '新版吉伊卡哇鑒定網站'),
   htmlAttrs: {
     lang: 'zh-TW'
   },
   meta: [
     {
       name: 'description',
-      content: '歡迎來到使用 Nuxt 3 開發的社群網站 - Chat!，本網站僅作為參加六角 Node.js 入門班學習使用'
+      content:
+        '不專業的吉伊卡哇商品真偽鑑定資訊網站，提供最新的真偽辨識資訊，協助收藏者避免購入仿冒品。'
     },
-    { name: 'twitter:title', content: 'Nuxt 3 社群網站 - Chat!' },
+    { name: 'twitter:title', content: '吉伊卡哇真偽鑑定網' },
     {
       name: 'twitter:description',
-      content: '歡迎來到使用 Nuxt 3 開發的社群網站 - Chat!，本網站僅作為參加六角 Node.js 入門班學習使用'
+      content:
+        '不專業的吉伊卡哇商品真偽鑑定資訊網站，提供最新的真偽辨識資訊，協助收藏者避免購入仿冒品。'
     },
-    { name: 'twitter:image', content: 'https://i.imgur.com/AVNujNC.png' },
+    // { name: 'twitter:image', content: 'https://i.imgur.com/AVNujNC.png' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:site_name', content: 'Chat!' },
+    { property: 'og:site_name', content: '吉伊卡哇鑑定' },
     {
       name: 'google-site-verification',
       content: 'q3j8Fywtb4CR5wt7ksjQlMPHXEPnepbCW3tmO_dIMGQ'
@@ -46,17 +48,19 @@ useHead({
 
 // 添加 SEO 搜尋引擎最佳化相關的 Meta Tags
 useSeoMeta({
-  description: '歡迎來到使用 Nuxt 3 開發的社群網站 - Chat!，本網站僅作為參加六角 Node.js 入門班學習使用',
-  ogTitle: 'Nuxt 3 社群網站 - Chat!',
-  ogDescription: '歡迎來到使用 Nuxt 3 開發的社群網站 - Chat!，本網站僅作為參加六角 Node.js 入門班學習使用',
+  description:
+    '不專業的吉伊卡哇商品真偽鑑定資訊網站，提供最新的真偽辨識資訊，協助收藏者避免購入仿冒品。',
+  ogTitle: '吉伊卡哇真偽鑑定網',
+  ogDescription:
+    '不專業的吉伊卡哇商品真偽鑑定資訊網站，提供最新的真偽辨識資訊，協助收藏者避免購入仿冒品。',
   ogUrl: 'https://community-web-4l2.pages.dev/',
   ogImage: 'https://i.imgur.com/AVNujNC.png',
   ogType: 'website',
-  ogSiteName: 'Chat!',
+  ogSiteName: '吉伊卡哇鑑定',
   twitterCard: 'summary_large_image',
-  twitterTitle: 'Nuxt 3 社群網站 - Chat!',
+  twitterTitle: '吉伊卡哇真偽鑑定網',
   twitterDescription:
-    '歡迎來到使用 Nuxt 3 開發的社群網站 - Chat!，本網站僅作為參加六角 Node.js 入門班學習使用',
+    '不專業的吉伊卡哇商品真偽鑑定資訊網站，提供最新的真偽辨識資訊，協助收藏者避免購入仿冒品。',
   twitterImage: 'https://i.imgur.com/AVNujNC.png'
 })
 </script>
