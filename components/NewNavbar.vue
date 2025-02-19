@@ -130,7 +130,7 @@ const yikawaList = computed(() => [
 ])
 
 const currentKeyword = computed(() => {
-  return (route.query.keyword as string) || 'usagi'
+  return (route.query.keyword as string) || ''
 })
 
 const isYikawaListExpanded = ref(true) // 控制列表展開/收合的狀態
@@ -181,7 +181,7 @@ const toggleNaganoList = () => {
 </script>
 
 <template>
-  <div class="sticky top-0 z-20 border-b-[3px] border-black bg-white py-3">
+  <div class="sticky top-0 z-20 border-b-2 border-gray-600 bg-white/70 py-3 backdrop-blur-[5px]">
     <div class="relative m-auto flex max-w-[1200px] items-center justify-between px-6">
       <nuxtLink to="/" class="text-[22px]">新吉伊卡哇鑑定站</nuxtLink>
 
@@ -192,164 +192,173 @@ const toggleNaganoList = () => {
         >
           <Icon name="ph:list-magnifying-glass" class="text-black" size="32" />
         </button>
-
-        <!-- member menu -->
-        <Transition name="fade">
-          <div
-            class="fixed inset-0 top-[75px] z-[200] bg-black bg-opacity-20"
-            v-show="showSidebar"
-            @click.self="showSidebar = false"
-          >
-            <Transition
-              name="slide"
-              enter-active-class="transition-all duration-300 ease-out"
-              leave-active-class="transition-all duration-300 ease-in"
-            >
-              <div class="left-bar h-full w-[300px] bg-white" v-show="showSidebar">
-                <div class="flex flex-col p-3">
-                  <!-- * 吉伊卡哇角色清單 -->
-                  <div class="flex flex-col">
-                    <div
-                      class="flex cursor-pointer items-center justify-between py-2"
-                      @click="toggleList"
-                    >
-                      <span class="text-lg font-semibold">{{
-                        t('title.yikawa_identification')
-                      }}</span>
-                      <Icon
-                        name="ph:plus"
-                        class="text-black transition-transform duration-300"
-                        :class="{ 'rotate-45': isYikawaListExpanded }"
-                        size="24"
-                      />
-                    </div>
-
-                    <Transition name="expand">
-                      <div v-show="isYikawaListExpanded" class="overflow-hidden">
-                        <NuxtLink
-                          v-for="item in yikawaList"
-                          :key="item.id"
-                          :to="`/?keyword=${item.key}`"
-                          class="sidebar-item"
-                          :class="{ 'sidebar-item-active': currentKeyword === item.key }"
-                        >
-                          <Icon name="ph:star" class="text-black" size="10" />
-                          <span>{{ item.name }}</span>
-                        </NuxtLink>
-                      </div>
-                    </Transition>
-                  </div>
-
-                  <hr class="my-4 border-[#cfcfcf]" />
-
-                  <!-- * 自嘲熊角色清單 -->
-                  <div class="flex flex-col">
-                    <div
-                      class="flex cursor-pointer items-center justify-between py-2"
-                      @click="toggleNaganoList"
-                    >
-                      <span class="text-lg font-semibold">{{
-                        t('title.chiikawa_identification')
-                      }}</span>
-                      <Icon
-                        name="ph:plus"
-                        class="text-black transition-transform duration-300"
-                        :class="{ 'rotate-45': isNaganoListExpanded }"
-                        size="24"
-                      />
-                    </div>
-
-                    <Transition name="expandNagano">
-                      <div v-show="isNaganoListExpanded" class="overflow-hidden">
-                        <NuxtLink
-                          v-for="item in naganoList"
-                          :key="item.id"
-                          :to="`/?keyword=${item.key}`"
-                          class="sidebar-item"
-                          :class="{ 'sidebar-item-active': currentNaganoKeyword === item.key }"
-                        >
-                          <Icon name="ph:star" class="text-black" size="10" />
-                          <span>{{ item.name }}</span>
-                        </NuxtLink>
-                      </div>
-                    </Transition>
-                  </div>
-
-                  <hr class="my-4 border-[#cfcfcf]" />
-
-                  <!-- * 公告欄 -->
-                  <NuxtLink
-                    to="/announcement"
-                    class="sidebar-page"
-                    exact-active-class="sidebar-item-active"
-                  >
-                    <Icon name="ph:newspaper" class="text-black" size="26" />
-                    <span>
-                      {{ t('title.announcement') }}
-                    </span>
-                  </NuxtLink>
-
-                  <!-- * 買娃地圖 -->
-                  <NuxtLink
-                    to="/shopMap"
-                    class="sidebar-page"
-                    exact-active-class="sidebar-item-active"
-                  >
-                    <Icon name="ph:map-pin" class="text-black" size="26" />
-                    <span>
-                      {{ t('title.buy_doll_map') }}
-                    </span>
-                  </NuxtLink>
-
-                  <hr class="my-4 border-[#cfcfcf]" />
-
-                  <!-- * 切換語言 -->
-                  <div class="flex items-center gap-4">
-                    <button
-                      class="language-button"
-                      :class="{ active: locale === 'zh-TW' }"
-                      @click="locale = 'zh-TW'"
-                    >
-                      中
-                    </button>
-                    <button
-                      class="language-button"
-                      :class="{ active: locale === 'jp' }"
-                      @click="locale = 'jp'"
-                    >
-                      日
-                    </button>
-                    <button
-                      class="language-button"
-                      :class="{ active: locale === 'en' }"
-                      @click="locale = 'en'"
-                    >
-                      En
-                    </button>
-                  </div>
-
-                  <hr class="my-4 border-[#cfcfcf]" />
-
-                  <div class="flex gap-1 text-gray-600">
-                    <NuxtLink to="/contact" class="cus-hover">{{ t('title.contact') }}</NuxtLink>
-                    ·
-                    <NuxtLink to="/commonSites" class="cus-hover">{{
-                      t('title.common_sites')
-                    }}</NuxtLink>
-                    ·
-                    <!-- * DC 連結 -->
-                    <a href="https://discord.gg/dhzzb8dG" target="_blank" class="cus-hover"
-                      >Discord</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </Transition>
-          </div>
-        </Transition>
       </div>
     </div>
   </div>
+  <!-- member menu -->
+  <Transition name="fade">
+    <div
+      class="fixed inset-0 top-[74px] z-[200] bg-black bg-opacity-20"
+      v-show="showSidebar"
+      @click.self="showSidebar = false"
+    >
+      <Transition
+        name="slide"
+        enter-active-class="transition-all duration-300 ease-out"
+        leave-active-class="transition-all duration-300 ease-in"
+      >
+        <div class="left-bar h-full w-[300px] bg-white" v-show="showSidebar">
+          <div class="flex flex-col p-3">
+            <!-- * 我要投稿 -->
+            <NuxtLink
+              to="/contribute"
+              class="sidebar-page border-primary6 text-primary6 cus-hover animate-bounce-twice border-2"
+              exact-active-class="sidebar-item-active"
+            >
+              <Icon name="ph:paper-plane-tilt" class=" " size="26" />
+              <span>
+                {{ t('title.submit') }}
+              </span>
+            </NuxtLink>
+
+            <hr class="my-4 border-[#cfcfcf]" />
+
+            <!-- * 吉伊卡哇角色清單 -->
+            <div class="flex flex-col">
+              <div
+                class="flex cursor-pointer items-center justify-between py-2"
+                @click="toggleList"
+              >
+                <span class="text-md font-semibold">{{ t('title.yikawa_identification') }}</span>
+                <Icon
+                  name="ph:plus"
+                  class="text-black transition-transform duration-300"
+                  :class="{ 'rotate-45': isYikawaListExpanded }"
+                  size="24"
+                />
+              </div>
+
+              <Transition name="expand">
+                <div v-show="isYikawaListExpanded" class="overflow-hidden">
+                  <NuxtLink
+                    v-for="item in yikawaList"
+                    :key="item.id"
+                    :to="`/?keyword=${item.key}`"
+                    class="sidebar-item"
+                    :class="{ 'sidebar-item-active': currentKeyword === item.key }"
+                  >
+                    <Icon
+                      :name="currentKeyword === item.key ? 'ph:star-fill' : 'ph:star'"
+                      size="10"
+                      :class="{ 'text-primary6': currentKeyword === item.key }"
+                    />
+                    <span>{{ item.name }}</span>
+                  </NuxtLink>
+                </div>
+              </Transition>
+            </div>
+
+            <hr class="my-4 border-[#cfcfcf]" />
+
+            <!-- * 自嘲熊角色清單 -->
+            <div class="flex flex-col">
+              <div
+                class="flex cursor-pointer items-center justify-between py-2"
+                @click="toggleNaganoList"
+              >
+                <span class="text-md font-semibold">{{ t('title.chiikawa_identification') }}</span>
+                <Icon
+                  name="ph:plus"
+                  class="text-black transition-transform duration-300"
+                  :class="{ 'rotate-45': isNaganoListExpanded }"
+                  size="24"
+                />
+              </div>
+
+              <Transition name="expandNagano">
+                <div v-show="isNaganoListExpanded" class="overflow-hidden">
+                  <NuxtLink
+                    v-for="item in naganoList"
+                    :key="item.id"
+                    :to="`/?keyword=${item.key}`"
+                    class="sidebar-item"
+                    :class="{ 'sidebar-item-active': currentNaganoKeyword === item.key }"
+                  >
+                    <Icon
+                      :name="currentKeyword === item.key ? 'ph:star-fill' : 'ph:star'"
+                      size="10"
+                      :class="{ 'text-primary6': currentKeyword === item.key }"
+                    />
+                    <span>{{ item.name }}</span>
+                  </NuxtLink>
+                </div>
+              </Transition>
+            </div>
+
+            <hr class="my-4 border-[#cfcfcf]" />
+
+            <!-- * 公告欄 -->
+            <!-- <NuxtLink
+              to="/announcement"
+              class="sidebar-page"
+              exact-active-class="sidebar-item-active"
+            >
+              <Icon name="ph:newspaper" class="text-black" size="26" />
+              <span>
+                {{ t('title.announcement') }}
+              </span>
+            </NuxtLink> -->
+
+            <!-- * 買娃地圖 -->
+            <!-- <NuxtLink to="/shopMap" class="sidebar-page" exact-active-class="sidebar-item-active">
+              <Icon name="ph:map-pin" class="text-black" size="26" />
+              <span>
+                {{ t('title.buy_doll_map') }}
+              </span>
+            </NuxtLink> -->
+
+            <!-- <hr class="my-4 border-[#cfcfcf]" /> -->
+
+            <!-- * 切換語言 -->
+            <div class="flex items-center gap-4">
+              <button
+                class="language-button"
+                :class="{ active: locale === 'zh-TW' }"
+                @click="locale = 'zh-TW'"
+              >
+                中
+              </button>
+              <button
+                class="language-button"
+                :class="{ active: locale === 'jp' }"
+                @click="locale = 'jp'"
+              >
+                日
+              </button>
+              <button
+                class="language-button"
+                :class="{ active: locale === 'en' }"
+                @click="locale = 'en'"
+              >
+                En
+              </button>
+            </div>
+
+            <hr class="my-4 border-[#cfcfcf]" />
+
+            <div class="flex gap-1 text-gray-600">
+              <NuxtLink to="/contact" class="cus-hover">{{ t('title.contact') }}</NuxtLink>
+              ·
+              <NuxtLink to="/commonSites" class="cus-hover">{{ t('title.common_sites') }}</NuxtLink>
+              ·
+              <!-- * DC 連結 -->
+              <a href="https://discord.gg/dhzzb8dG" target="_blank" class="cus-hover">Discord</a>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -382,18 +391,18 @@ const toggleNaganoList = () => {
 }
 
 .sidebar-item {
-  @apply flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-bold duration-300 hover:bg-yellow-500/25;
+  @apply hover:bg-primary1 flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-medium duration-300;
 }
 
 .sidebar-item-active {
-  @apply bg-yellow-500/25 text-black;
+  @apply bg-primary1 text-black;
 }
 .sidebar-item-icon {
   @apply h-8 w-8;
 }
 
 .sidebar-page {
-  @apply flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-bold duration-300 hover:bg-yellow-500/25;
+  @apply hover:bg-primary1 flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-bold duration-300;
 }
 
 /* 側選單 背景遮罩 動畫 */
@@ -469,7 +478,7 @@ const toggleNaganoList = () => {
 
 /* 切換語言按鈕 */
 .language-button {
-  @apply h-10 w-10 rounded-full border-2 border-transparent bg-yellow-500/25 px-2 py-1 text-black transition-all duration-200;
+  @apply bg-primary1 h-10 w-10 rounded-full border-2 border-transparent px-2 py-1 text-black transition-all duration-200;
 }
 
 .language-button:hover {
@@ -478,5 +487,28 @@ const toggleNaganoList = () => {
 
 .language-button.active {
   @apply border-black font-semibold;
+}
+
+@keyframes bounce-twice {
+  0%,
+  5%,
+  15%,
+  25%,
+  100% {
+    transform: translateY(0);
+  }
+  10%,
+  20% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-bounce-twice {
+  animation: bounce-twice 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* 當滑鼠懸停時暫停動畫 */
+.animate-bounce-twice:hover {
+  animation-play-state: paused;
 }
 </style>

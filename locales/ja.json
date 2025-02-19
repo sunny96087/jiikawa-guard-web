@@ -18,6 +18,7 @@
     "hoshi": "星"
   },
   "yikawa_series": {
+    "all": "すべてのシリーズ",
     "yomiuri_giants": "読売ジャイアンツ",
     "soft_plush": "ふわふわシリーズ",
     "cafe": "カフェ",
@@ -54,12 +55,13 @@
     "limited_edition": "地域限定"
   },
   "yikawa_categories": {
-    "plush": "公仔",
-    "keychain": "吊飾",
-    "misc": "雜項",
-    "cushion": "抱枕",
-    "s_shape": "S 姬",
-    "tapestry": "幔幕 / 桌面掛"
+    "all": "すべてのカテゴリ",
+    "plush": "おもちゃ",
+    "keychain": "チェーン",
+    "cushion": "ティッシュ",
+    "s_shape": "S キャラクター",
+    "tapestry": "幔幕 / テーブルホールディング",
+    "others": "その他"
   },
   "nagano_characters": {
     "pug": "パグ",

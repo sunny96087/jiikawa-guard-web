@@ -16,9 +16,11 @@
     "yoroisan": "Yoroisan",
     "kabutomushi": "Kabutomushi",
     "yousei": "Yousei",
-    "hoshi": "Hoshi"
+    "hoshi": "Hoshi",
+    "others": "Others"
   },
   "yikawa_series": {
+    "all": "All Series",
     "yomiuri_giants": "Yomiuri Giants",
     "soft_plush": "Soft Plush Series",
     "cafe": "Café",
@@ -55,12 +57,13 @@
     "limited_edition": "Limited Edition"
   },
   "yikawa_categories": {
+    "all": "All Categories",
     "plush": "Plush",
     "keychain": "Keychain",
-    "misc": "Miscellaneous",
     "cushion": "Cushion",
     "s_shape": "S-shape",
-    "tapestry": "Tapestry / Table Hanging"
+    "tapestry": "Tapestry / Table Hanging",
+    "others": "Others"
   },
   "nagano_characters": {
     "pug": "Pug",

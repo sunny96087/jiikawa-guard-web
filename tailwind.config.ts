@@ -14,11 +14,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        whith1: '#000',
-        whith2: '#fff',
-        whith3: '#000',
-        whith4: '#fff',
-        whith5: '#000'
+        primary1: '#E1FAFC',
+        primary2: '#C5F0ED',
+        primary3: '#96D1E3',
+        primary4: '#6BB8D6',
+        primary5: '#449FC9',
+        primary6: '#2181BC',
+        secondary1: '#FFF5E6',
+        secondary2: '#FFE9A6',
+        secondary3: '#FFDE7D',
+        secondary4: '#FFD754',
+        secondary5: '#FFB82B',
+        secondary6: '#FF9A03'
       }
     }
   },

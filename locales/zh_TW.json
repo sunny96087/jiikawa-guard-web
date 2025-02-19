@@ -9,8 +9,9 @@
     "common_sites": "常用網站",
     "buy_doll_map": "買娃地圖",
     "announcement": "公告欄",
-    "yikawa_identification": "吉伊卡哇角色鑑定",
-    "chiikawa_identification": "自嘲熊角色鑑定"
+    "yikawa_identification": "吉伊卡哇角色",
+    "chiikawa_identification": "自嘲熊角色",
+    "submit": "我要投稿"
   },
   "yikawa": {
     "chiikawa": "小可愛",
@@ -31,6 +32,7 @@
     "hoshi": "小星星"
   },
   "yikawa_series": {
+    "all": "所有系列",
     "yomiuri_giants": "讀賣巨人隊",
     "soft_plush": "軟綿綿系列",
     "cafe": "Café",
@@ -67,12 +69,13 @@
     "limited_edition": "地區限定"
   },
   "yikawa_categories": {
+    "all": "所有分類",
     "plush": "公仔",
     "keychain": "吊飾",
-    "misc": "雜項",
     "cushion": "抱枕",
     "s_shape": "S 姬",
-    "tapestry": "幔幕 / 桌面掛"
+    "tapestry": "幔幕 / 桌面掛",
+    "others": "其他"
   },
   "nagano_characters": {
     "polar_bear": "白熊",

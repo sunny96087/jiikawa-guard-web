@@ -3,6 +3,7 @@
 
 body {
   font-family: 'Azeret Mono', monospace;
+  color: #333;
 }
 
 .paytone-one-regular {
@@ -19,16 +20,14 @@ body {
 }
 
 .custom-select {
-  @apply max-h-[52px] bg-white;
+  @apply max-h-[52px] rounded-full border border-gray-300 bg-white;
   padding: 12px 16px;
-  border: 2px solid #000;
   display: flex;
   justify-content: space-between;
 }
 
 .custom-select-options {
-  @apply absolute top-0 z-20 flex w-full flex-col bg-white shadow-sm;
-  border: 2px solid #000;
+  @apply absolute top-0 z-20 flex max-h-[300px] w-full flex-col overflow-y-auto rounded-[24px] border border-gray-300 bg-white shadow-sm;
 }
 
 .custom-select-options .option {
@@ -49,7 +48,7 @@ input:focus {
 }
 
 .custom-search-input {
-  @apply flex max-h-[52px] border-2 border-black bg-white;
+  @apply flex max-h-[52px] overflow-hidden rounded-full border border-gray-300 bg-white;
 }
 
 .custom-search-input input {
@@ -57,20 +56,19 @@ input:focus {
 }
 
 .custom-input {
-  @apply max-h-[52px] w-full border-2 border-black bg-white px-3 py-4;
+  @apply max-h-[52px] w-full overflow-hidden rounded-full border border-gray-300 bg-white px-3 py-4;
 }
 
 .custom-area {
-  @apply w-full border-2 border-black bg-white px-3 py-4;
+  @apply w-full overflow-hidden rounded-[24px] border border-gray-300 bg-white px-3 py-4;
 }
 
 .custom-search-input button {
-  @apply flex transform items-center justify-center border-l-2 border-black p-3 text-white duration-200;
-  background-color: #03438d;
+  @apply bg-primary6 flex transform items-center justify-center border-l border-gray-300 p-3 text-white duration-200;
 }
 
 .custom-search-input button:hover {
-  background-color: #eec32a;
+  @apply bg-primary5;
 }
 
 /* * 滑鼠移入 hover */
@@ -84,19 +82,19 @@ input:focus {
 
 /* * 主要色 */
 .text-primary {
-  color: #03438d;
+  @apply text-primary6;
 }
 
 .bg-primary {
-  background-color: #03438d;
+  @apply bg-primary6;
 }
 
 .border-primary {
-  border-color: #03438d;
+  @apply border-primary6;
 }
 
 .avatar {
-  @apply overflow-hidden rounded-full border-2 border-black;
+  @apply overflow-hidden rounded-full border border-gray-300;
 }
 
 .custom-avatar-clear {
@@ -108,27 +106,24 @@ input:focus {
 }
 
 .custom-border-2 {
-  @apply border-2 border-black;
+  @apply border-2 border-gray-300;
 }
 
 .custom-btn-primary {
-  @apply flex transform items-center justify-center border-2 border-black p-3 font-bold text-white duration-200;
-  background-color: #03438d;
-  box-shadow: -2px 2px 0px #000400;
+  @apply bg-primary1 border-primary6 text-primary6 flex transform items-center justify-center rounded-full border px-5 py-3 font-bold duration-200;
+  /* box-shadow: -2px 2px 0px #000400; */
 }
 .custom-btn-primary:hover {
-  background-color: #eec32a;
-  color: #000;
+  @apply bg-primary3;
 }
 
 .custom-btn-secondary {
-  @apply flex transform items-center justify-center rounded-lg border-2 border-black p-3 font-bold duration-200;
-  background-color: #eec32a;
+  @apply bg-primary5 flex transform items-center justify-center rounded-lg border-2 border-gray-300 p-3 font-bold duration-200;
   box-shadow: -2px 2px 0px #000400;
 }
 
 .custom-btn-disabled {
-  @apply flex transform cursor-not-allowed items-center justify-center rounded-lg border-2 border-black bg-gray-400 p-3 font-bold text-gray-700 duration-200;
+  @apply flex transform cursor-not-allowed items-center justify-center rounded-lg border-2 border-gray-300 bg-gray-400 p-3 font-bold text-gray-700 duration-200;
   box-shadow: -2px 2px 0px #000400;
 }
 
