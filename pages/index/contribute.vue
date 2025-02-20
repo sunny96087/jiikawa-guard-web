@@ -119,7 +119,7 @@ const copyFormat = () => {
 
     <!-- 格式區 -->
     <div class="border-primary4 bg-primary1/40 mb-8 rounded-xl border-2 p-6">
-      <div class="mb-4 flex items-center justify-between">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h2 class="text-xl font-bold">提供格式（點擊右側按鈕可複製）</h2>
         <button
           @click="copyFormat"
@@ -137,7 +137,7 @@ const copyFormat = () => {
     <!-- 提供資料的方式 -->
     <div class="mb-8">
       <h2 class="mb-4 text-xl font-bold">提供資料的方式</h2>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid gap-4 sm:grid-cols-2">
         <a
           href="mailto:yu13142013@gmail.com?subject=吉伊卡哇真偽鑒定資料提供"
           class="border-primary6 text-primary6 hover:bg-primary1 cus-hover flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-[18px] font-medium"
@@ -165,6 +165,18 @@ const copyFormat = () => {
         歡迎加入我們的
         <a href="https://discord.gg/dhzzb8dG" target="_blank" class="text-primary6">Discord 群組</a>
         一起討論吉伊卡哇！
+      </p>
+
+      <br />
+      <p>
+        想買娃也可以參考作者的
+        <a
+          href="https://myship.7-11.com.tw/general/detail/GM2502122523678"
+          target="_blank"
+          class="text-primary6"
+        >
+          賣貨便 </a
+        >，都是正版的從社團五花大綁買來的複數娃 💫
       </p>
     </div>
   </div>
