@@ -7,6 +7,7 @@ const router = useRouter()
 const route = useRoute()
 import defaultAvatar from '~/assets/images/userPic.png'
 import { useI18n } from 'vue-i18n'
+import { roleList, naganoRoleList } from '~/constants/yikawa'
 
 const { t, locale } = useI18n()
 
@@ -46,91 +47,15 @@ watch(showSidebar, (newVal) => {
 })
 
 // 將 yikawaList 改為計算屬性
-const yikawaList = computed(() => [
-  {
-    id: 1,
-    key: 'chiikawa',
-    name: t('yikawa.chiikawa')
-  },
-  {
-    id: 2,
-    key: 'hachiware',
-    name: t('yikawa.hachiware')
-  },
-  {
-    id: 3,
-    key: 'usagi',
-    name: t('yikawa.usagi')
-  },
-  {
-    id: 4,
-    key: 'momonga',
-    name: t('yikawa.momonga')
-  },
-  {
-    id: 5,
-    key: 'kurimanjuu',
-    name: t('yikawa.kurimanjuu')
-  },
-  {
-    id: 6,
-    key: 'rakko',
-    name: t('yikawa.rakko')
-  },
-  {
-    id: 7,
-    key: 'shisa',
-    name: t('yikawa.shisa')
-  },
-  {
-    id: 8,
-    key: 'kani',
-    name: t('yikawa.kani')
-  },
-  {
-    id: 9,
-    key: 'ano_ko',
-    name: t('yikawa.ano_ko')
-  },
-  {
-    id: 10,
-    key: 'daistrong',
-    name: t('yikawa.daistrong')
-  },
-  {
-    id: 11,
-    key: 'sou',
-    name: t('yikawa.sou')
-  },
-  {
-    id: 12,
-    key: 'chimera',
-    name: t('yikawa.chimera')
-  },
-  {
-    id: 13,
-    key: 'yoroisan',
-    name: t('yikawa.yoroisan')
-  },
-  {
-    id: 14,
-    key: 'kabutomushi',
-    name: t('yikawa.kabutomushi')
-  },
-  {
-    id: 15,
-    key: 'yousei',
-    name: t('yikawa.yousei')
-  },
-  {
-    id: 16,
-    key: 'hoshi',
-    name: t('yikawa.hoshi')
-  }
-])
+const yikawaList = computed(() => {
+  return roleList.map((item) => ({
+    ...item,
+    name: t(item.name)
+  }))
+})
 
 const currentKeyword = computed(() => {
-  return (route.query.keyword as string) || ''
+  return (route.query.keyword as string) || 'all_chiikawa'
 })
 
 const isYikawaListExpanded = ref(true) // 控制列表展開/收合的狀態
@@ -141,36 +66,15 @@ const toggleList = () => {
 
 /** ========== 自嘲熊 ========== */
 // 將 naganoList 改為計算屬性
-const naganoList = computed(() => [
-  {
-    id: 1,
-    key: 'polar_bear',
-    name: t('nagano_characters.polar_bear')
-  },
-  {
-    id: 2,
-    key: 'croquette',
-    name: t('nagano_characters.croquette')
-  },
-  {
-    id: 3,
-    key: 'sausage',
-    name: t('nagano_characters.sausage')
-  },
-  {
-    id: 4,
-    key: 'pug',
-    name: t('nagano_characters.pug')
-  },
-  {
-    id: 5,
-    key: 'others',
-    name: t('nagano_characters.others')
-  }
-])
+const naganoList = computed(() => {
+  return naganoRoleList.map((item) => ({
+    ...item,
+    name: t(item.name)
+  }))
+})
 
 const currentNaganoKeyword = computed(() => {
-  return (route.query.keyword as string) || 'polar_bear'
+  return (route.query.keyword as string) || 'all_nagano'
 })
 
 const isNaganoListExpanded = ref(false) // 控制列表展開/收合的狀態
@@ -212,7 +116,7 @@ const toggleNaganoList = () => {
             <!-- * 我要投稿 -->
             <NuxtLink
               to="/contribute"
-              class="sidebar-page border-primary6 text-primary6 cus-hover animate-bounce-twice border-2"
+              class="sidebar-page cus-hover animate-bounce-twice border-2 border-primary6 text-primary6"
               exact-active-class="sidebar-item-active"
             >
               <Icon name="ph:paper-plane-tilt" class=" " size="26" />
@@ -391,7 +295,7 @@ const toggleNaganoList = () => {
 }
 
 .sidebar-item {
-  @apply hover:bg-primary1 flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-medium duration-300;
+  @apply flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-medium duration-300 hover:bg-primary1;
 }
 
 .sidebar-item-active {
@@ -402,7 +306,7 @@ const toggleNaganoList = () => {
 }
 
 .sidebar-page {
-  @apply hover:bg-primary1 flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-bold duration-300;
+  @apply flex transform items-center gap-3 rounded-[10px] px-3 py-2.5 font-bold duration-300 hover:bg-primary1;
 }
 
 /* 側選單 背景遮罩 動畫 */
@@ -478,7 +382,7 @@ const toggleNaganoList = () => {
 
 /* 切換語言按鈕 */
 .language-button {
-  @apply bg-primary1 h-10 w-10 rounded-full border-2 border-transparent px-2 py-1 text-black transition-all duration-200;
+  @apply h-10 w-10 rounded-full border-2 border-transparent bg-primary1 px-2 py-1 text-black transition-all duration-200;
 }
 
 .language-button:hover {

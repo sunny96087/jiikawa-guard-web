@@ -64,7 +64,7 @@ input:focus {
 }
 
 .custom-search-input button {
-  @apply bg-primary6 flex transform items-center justify-center border-l border-gray-300 p-3 text-white duration-200;
+  @apply flex transform items-center justify-center border-l border-gray-300 bg-primary6 p-3 text-white duration-200;
 }
 
 .custom-search-input button:hover {
@@ -110,20 +110,25 @@ input:focus {
 }
 
 .custom-btn-primary {
-  @apply bg-primary1 border-primary6 text-primary6 flex transform items-center justify-center rounded-full border px-5 py-3 font-bold duration-200;
+  @apply flex transform items-center justify-center rounded-full border border-primary5 bg-primary5 px-5 py-3 font-bold text-black duration-200;
   /* box-shadow: -2px 2px 0px #000400; */
 }
 .custom-btn-primary:hover {
-  @apply bg-primary3;
+  @apply bg-primary4;
 }
 
 .custom-btn-secondary {
-  @apply bg-primary5 flex transform items-center justify-center rounded-lg border-2 border-gray-300 p-3 font-bold duration-200;
-  box-shadow: -2px 2px 0px #000400;
+  @apply flex transform items-center justify-center rounded-full border border-primary6 bg-primary1 px-5 py-3 font-bold text-primary6 duration-200;
+  /* box-shadow: -2px 2px 0px #000400; */
+}
+
+.custom-btn-gray {
+  @apply flex transform items-center justify-center rounded-full border border-gray-400 bg-transparent px-5 py-3 font-bold text-gray-700 duration-200;
+  /* box-shadow: -2px 2px 0px #000400; */
 }
 
 .custom-btn-disabled {
-  @apply flex transform cursor-not-allowed items-center justify-center rounded-lg border-2 border-gray-300 bg-gray-400 p-3 font-bold text-gray-700 duration-200;
+  @apply flex transform cursor-not-allowed items-center justify-center rounded-full border-2 border-gray-300 bg-gray-400 px-5 py-3 font-bold text-gray-700 duration-200;
   box-shadow: -2px 2px 0px #000400;
 }
 

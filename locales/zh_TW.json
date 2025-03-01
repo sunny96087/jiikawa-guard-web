@@ -14,6 +14,7 @@
     "submit": "我要投稿"
   },
   "yikawa": {
+    "all": "全部角色",
     "chiikawa": "小可愛",
     "hachiware": "小八",
     "usagi": "兔兔",
@@ -29,7 +30,8 @@
     "yoroisan": "盔甲人",
     "kabutomushi": "甲蟲",
     "yousei": "妖精",
-    "hoshi": "小星星"
+    "hoshi": "小星星",
+    "others": "其他"
   },
   "yikawa_series": {
     "all": "所有系列",
@@ -66,7 +68,8 @@
     "restaurant": "餐廳系列",
     "magical_girl": "魔法少女",
     "bakery": "麵包店",
-    "limited_edition": "地區限定"
+    "limited_edition": "地區限定",
+    "others": "其他"
   },
   "yikawa_categories": {
     "all": "所有分類",
@@ -78,10 +81,16 @@
     "others": "其他"
   },
   "nagano_characters": {
+    "all": "全部角色",
     "polar_bear": "白熊",
     "croquette": "可樂餅",
     "sausage": "魚腸",
     "pug": "巴哥",
     "others": "其他"
+  },
+  "yikawa_status": {
+    "all": "所有狀態",
+    "show": "顯示",
+    "hide": "隱藏"
   }
 }

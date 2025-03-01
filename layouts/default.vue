@@ -25,13 +25,13 @@ const isContributePage = computed(() => {
     <Footer />
 
     <!-- * 提示網站尚未完成 -->
-    <div
+    <!-- <div
       v-if="!isContributePage"
       class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 bg-black/60 p-4 text-center font-bold text-white backdrop-blur-[6px]"
     >
       <p class="text-xl">網站尚未完成，目前還在收集資料階段，請不要亂跑 ><</p>
       <NuxtLink to="/contribute" class="custom-btn-primary">我要提供資料</NuxtLink>
-    </div>
+    </div> -->
   </main>
 </template>
 <style scoped>

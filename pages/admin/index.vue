@@ -1,12 +1,28 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: false,
-  middleware: 'is-admin'
+  layout: false
+  // middleware: 'is-admin'
+})
+
+const router = useRouter()
+
+/** 檢查 是否登入 */
+
+const userInfo = ref<any>(null)
+
+onMounted(() => {
+  userInfo.value = localStorage.getItem('userInfo')
+  console.log(userInfo.value)
+
+  // || !userInfo.value.isAdmin // 還沒設定管理員欄位，所以先不加
+  if (!userInfo.value) {
+    router.push('/adminLogin')
+  }
 })
 </script>
 
 <template>
-  <main class="relative min-h-screen w-full">
+  <main class="bg relative min-h-screen w-full">
     <admin-navbar />
     <div class="page-wrapper">
       <div class="grow">
@@ -19,13 +35,6 @@ definePageMeta({
 </template>
 
 <style scoped>
-main {
-  background: url('~/assets/images/bg.png') no-repeat center center;
-  background-size: cover;
-  background-attachment: fixed;
-  font-family: 'Azeret Mono';
-}
-
 .page-wrapper {
   max-width: 1200px;
   width: 100%;
@@ -37,4 +46,10 @@ main {
   align-items: start;
 }
 
+.bg {
+  background: url('~/assets/images/bg.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Azeret Mono';
+}
 </style>

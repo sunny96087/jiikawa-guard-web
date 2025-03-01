@@ -14,7 +14,7 @@ const menu = ref(false)
 
 function logout() {
   store.logout()
-  router.push('/login')
+  router.push('/adminLogin')
 }
 
 // getUserInfo()
@@ -33,16 +33,20 @@ onMounted(() => {
 <template>
   <div class="sticky top-0 z-20 border-b-[3px] border-black bg-white py-3">
     <div class="relative m-auto flex max-w-[1200px] items-center justify-between px-6">
-      <nuxtLink to="/" class="paytone-one-regular text-[26px]">Chat! Admin</nuxtLink>
+      <nuxtLink to="/" class="paytone-one-regular text-[26px]"
+        >新版吉伊卡哇鑑定站 後台管理</nuxtLink
+      >
 
       <div class="flex items-center justify-center gap-4">
-        <nuxtLink to="/" class="border-b-2 border-black font-bold leading-[28px] hidden sm:block">回前台</nuxtLink>
+        <nuxtLink to="/" class="hidden border-b-2 border-black font-bold leading-[28px] sm:block"
+          >回前台</nuxtLink
+        >
 
         <!-- member -->
         <div v-if="store.isLoggedIn" @click="menu = !menu" class="flex cursor-pointer gap-[10px]">
-          <div class="avatar h-[30px] w-[30px]">
+          <!-- <div class="avatar h-[30px] w-[30px]">
             <img :src="store.userInfo?.avatar || defaultAvatar" alt="avatar" class="pic-auto" />
-          </div>
+          </div> -->
 
           <div class="border-b-2 border-black font-bold leading-[28px]">
             {{ store.userInfo?.name || 'Admin' }}
@@ -53,7 +57,10 @@ onMounted(() => {
           v-if="menu"
           class="double-bg absolute right-4 top-[124%] inline-flex flex-col border-2 border-black bg-white"
         >
-          <nuxtLink to="/admin/" class="menu-item border-b-2 border-black">公告</nuxtLink>
+          <nuxtLink to="/admin/picData" class="menu-item border-b-2 border-black"
+            >圖鑑管理</nuxtLink
+          >
+          <nuxtLink to="/admin/" class="menu-item border-b-2 border-black">公告管理</nuxtLink>
           <nuxtLink to="/admin/test" class="menu-item border-b-2 border-black">測試</nuxtLink>
           <nuxtLink to="/" class="menu-item border-b-2 border-black">回前台</nuxtLink>
           <nuxtLink @click="logout" class="menu-item">登出 </nuxtLink>

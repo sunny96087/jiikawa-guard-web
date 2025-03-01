@@ -1,16 +1,3 @@
-<template>
-  <div>
-    <NuxtPage />
-    <!-- <navbar />
-    <NuxtLayout>
-      <Slidebar />
-    </NuxtLayout> -->
-    <ToastTool class="z-50" />
-    <CustomDialog />
-    <LoadingTool />
-  </div>
-</template>
-
 <script setup>
 useHead({
   title: '新版吉伊卡哇鑒定網站',
@@ -64,3 +51,24 @@ useSeoMeta({
   twitterImage: 'https://i.imgur.com/AVNujNC.png'
 })
 </script>
+<template>
+  <div>
+    <NuxtPage />
+    <!-- <navbar />
+    <NuxtLayout>
+      <Slidebar />
+    </NuxtLayout> -->
+    <ToastTool class="z-50" />
+    <CustomDialog />
+    <LoadingTool />
+  </div>
+</template>
+
+<style scoped>
+body {
+  background: url('~/assets/images/bg.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Azeret Mono';
+}
+</style>

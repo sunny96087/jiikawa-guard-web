@@ -12,10 +12,11 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      // api: 'http://localhost:3666/',
+      api: 'http://localhost:3666/',
 
       // 線上
-      api: 'https://express-community.onrender.com/',
+      // api: 'https://express-community.onrender.com/',
+      // api: 'https://jiikawa-guard-api.onrender.com/',
 
       //   userInfo: null as JsonObject | null,
       //   tokenInfo: {
@@ -260,6 +261,12 @@ export const APIStore = defineStore({
       return await axios.put(`${this.api}announcements/views/${data.id}`)
     },
 
+    // ========== 後台管理員登入 ==========
+
+    // 後台 管理員登入
+    async apiAdminLogin(data: JsonObject) {
+      return await axios.post(`${this.api}users/adminLogin`, data)
+    },
 
     // todo 本地端資料處理 localStorage
 
@@ -315,93 +322,6 @@ export const APIStore = defineStore({
       this.userInfo = null
       this.isLoggedIn = false
     }
-
-    /** 
-      async getRSAKey() {
-        try {
-          return await axios.get(`${this.api}users/key`);
-        } catch (e) {
-          console.log(`getRSAKey error `, e);
-          return e;
-        }
-      },
-      async getVersionInfo() {
-        try {
-          return await axios.get(`${this.api}users/version`);
-        } catch (e) {
-          console.log(`getVersionInfo error `, e);
-          return e;
-        }
-      },
-      // 註冊
-      async register(data: JsonObject) {
-        try {
-          return await axios.post(`${this.api}users/register`, data);
-        } catch (e) {
-          console.log(`register error`, e);
-          return e;
-        }
-      },
-      // 登入
-      async login(data: JsonObject) {
-        try {
-          return await axios.post(`${this.api}users/login`, data);
-        } catch (e) {
-          console.log(`login error`, e);
-          return e;
-        }
-      },
-      // 取會員資料
-      async loadUserProfile() {
-        try {
-          const user = this.getCacheUser();
-          console.log(`getCacheUser = ${JSON.stringify(user)}`);
-          return await axios.get(`${this.api}users/info`, {
-            headers: {
-              token: user ? (user!.token as string) : "",
-            },
-          });
-        } catch (e) {
-          console.log(`loadUserProfile error`, e);
-          return e;
-        }
-      },
-      async loadUserProfileWithToken(token: string) {
-        try {
-          console.log(`loadUserProfileWithToken = ${JSON.stringify(token)}`);
-          return await axios.get(`${this.api}users/info`, {
-            headers: {
-              token: token,
-            },
-          });
-        } catch (e) {
-          console.log(`loadUserProfile error`, e);
-          return e;
-        }
-      },
-      // 取得使用紀錄
-      async loadActionLogList(data: JsonObject) {
-        try {
-          const user = this.getCacheUser();
-          return await axios.post(`${this.api}users/record/list`, data, {
-            headers: {
-              token: user ? (user!.token as string) : "",
-            },
-          });
-        } catch (e) {
-          console.log(`loadActionLogList error`, e);
-          return e;
-        }
-      },
-      async googleLogin() {
-        try {
-          return await axios.post(`${this.api}google/login`);
-        } catch (e) {
-          console.log(`googleLogin error`, e);
-          return e;
-        }
-      },
-    */
   },
   getters: {
     //   getUserInfo: (state) => state.userInfo,

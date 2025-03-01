@@ -9,6 +9,7 @@ const route = useRoute()
 
 import { showToast, openDialog, showLoading, hideLoading } from '~/store/eventBus'
 import { useI18n } from 'vue-i18n'
+import { seriesList, categoryList } from '~/constants/yikawa'
 
 const { t } = useI18n()
 
@@ -16,179 +17,12 @@ const currentKeyword = ref('') // 關鍵字
 
 /* =============== 系列 =============== */
 const currentYikawaSeries = ref('all') // 系列
-
-const yikawaSeriesList = computed(() => [
-  {
-    id: 0,
-    key: 'all',
-    name: t('yikawa_series.all')
-  },
-  {
-    id: 1,
-    key: 'yomiuri_giants',
-    name: t('yikawa_series.yomiuri_giants')
-  },
-  {
-    id: 2,
-    key: 'soft_plush',
-    name: t('yikawa_series.soft_plush')
-  },
-  {
-    id: 3,
-    key: 'cafe',
-    name: t('yikawa_series.cafe')
-  },
-  {
-    id: 4,
-    key: 'chiikawa_land',
-    name: t('yikawa_series.chiikawa_land')
-  },
-  {
-    id: 5,
-    key: 'mogumogu',
-    name: t('yikawa_series.mogumogu')
-  },
-  {
-    id: 6,
-    key: 'nagano_market',
-    name: t('yikawa_series.nagano_market')
-  },
-  {
-    id: 7,
-    key: 'ichiban_kuji',
-    name: t('yikawa_series.ichiban_kuji')
-  },
-  {
-    id: 8,
-    key: 'rairai_dining',
-    name: t('yikawa_series.rairai_dining')
-  },
-  {
-    id: 9,
-    key: 'winter_scarf',
-    name: t('yikawa_series.winter_scarf')
-  },
-  {
-    id: 10,
-    key: 'outing',
-    name: t('yikawa_series.outing')
-  },
-  {
-    id: 11,
-    key: 'basic',
-    name: t('yikawa_series.basic')
-  },
-  {
-    id: 12,
-    key: 'sushi',
-    name: t('yikawa_series.sushi')
-  },
-  {
-    id: 13,
-    key: 'angel_devil',
-    name: t('yikawa_series.angel_devil')
-  },
-  {
-    id: 14,
-    key: 'parallel_world',
-    name: t('yikawa_series.parallel_world')
-  },
-  {
-    id: 15,
-    key: 'hero_collab',
-    name: t('yikawa_series.hero_collab')
-  },
-  {
-    id: 16,
-    key: 'travel',
-    name: t('yikawa_series.travel')
-  },
-  {
-    id: 17,
-    key: 'tokyo_station',
-    name: t('yikawa_series.tokyo_station')
-  },
-  {
-    id: 18,
-    key: 'forest_mushroom',
-    name: t('yikawa_series.forest_mushroom')
-  },
-  {
-    id: 19,
-    key: 'fluffy_grass',
-    name: t('yikawa_series.fluffy_grass')
-  },
-  {
-    id: 20,
-    key: 'aquarium',
-    name: t('yikawa_series.aquarium')
-  },
-  {
-    id: 21,
-    key: 'unspecified',
-    name: t('yikawa_series.unspecified')
-  },
-  {
-    id: 22,
-    key: 'birthday',
-    name: t('yikawa_series.birthday')
-  },
-  {
-    id: 23,
-    key: 'pajama_party',
-    name: t('yikawa_series.pajama_party')
-  },
-  {
-    id: 24,
-    key: 'christmas',
-    name: t('yikawa_series.christmas')
-  },
-  {
-    id: 25,
-    key: 'halloween',
-    name: t('yikawa_series.halloween')
-  },
-  {
-    id: 26,
-    key: 'express_delivery',
-    name: t('yikawa_series.express_delivery')
-  },
-  {
-    id: 27,
-    key: 'amusement_park',
-    name: t('yikawa_series.amusement_park')
-  },
-  {
-    id: 28,
-    key: 'hankyu_train',
-    name: t('yikawa_series.hankyu_train')
-  },
-  {
-    id: 29,
-    key: 'shisa_festival',
-    name: t('yikawa_series.shisa_festival')
-  },
-  {
-    id: 30,
-    key: 'restaurant',
-    name: t('yikawa_series.restaurant')
-  },
-  {
-    id: 31,
-    key: 'magical_girl',
-    name: t('yikawa_series.magical_girl')
-  },
-  {
-    id: 32,
-    key: 'bakery',
-    name: t('yikawa_series.bakery')
-  },
-  {
-    id: 33,
-    key: 'limited_edition',
-    name: t('yikawa_series.limited_edition')
-  }
-])
+const yikawaSeriesList = computed(() => {
+  return seriesList.map((item) => ({
+    ...item,
+    name: t(item.name)
+  }))
+})
 
 const dropdownSeriesVisible = ref(false)
 
@@ -199,7 +33,7 @@ const toggleDropdown = () => {
 const selectOption = (index: number) => {
   currentYikawaSeries.value = yikawaSeriesList.value[index].key
   dropdownSeriesVisible.value = false
-  console.log(`currentPostType.value = ${currentPostType.value}`)
+  loadData()
 }
 
 /**
@@ -212,44 +46,12 @@ watch(currentYikawaSeries, () => {
 
 /* =============== 分類 =============== */
 const currentYikawaCategory = ref('all') // 分類
-
-const yikawaCategoriesList = computed(() => [
-  {
-    id: 0,
-    key: 'all',
-    name: t('yikawa_categories.all')
-  },
-  {
-    id: 1,
-    key: 'plush',
-    name: t('yikawa_categories.plush')
-  },
-  {
-    id: 2,
-    key: 'keychain',
-    name: t('yikawa_categories.keychain')
-  },
-  {
-    id: 3,
-    key: 'cushion',
-    name: t('yikawa_categories.cushion')
-  },
-  {
-    id: 4,
-    key: 's_shape',
-    name: t('yikawa_categories.s_shape')
-  },
-  {
-    id: 5,
-    key: 'tapestry',
-    name: t('yikawa_categories.tapestry')
-  },
-  {
-    id: 6,
-    key: 'others',
-    name: t('yikawa_categories.others')
-  }
-])
+const yikawaCategoriesList = computed(() => {
+  return categoryList.map((item) => ({
+    ...item,
+    name: t(item.name)
+  }))
+})
 
 const dropdownCategoryVisible = ref(false)
 
