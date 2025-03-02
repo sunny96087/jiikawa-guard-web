@@ -8,7 +8,7 @@ const store = APIStore()
 import { showToast, openDialog, showLoading, hideLoading } from '~/store/eventBus'
 import { useI18n } from 'vue-i18n'
 
-import { roleList, seriesList, categoryList, statusList } from '~/constants/yikawa'
+import { roleList, seriesList, categoryList, statusList, naganoRoleList } from '~/constants/yikawa'
 
 const { t } = useI18n()
 
@@ -132,70 +132,24 @@ const selectStatusOption = (index: number) => {
 }
 
 /* =============== 圖鑑列表 =============== */
-const picDataList = ref([
-  {
-    id: 1,
-    role: 'hachiware',
-    name: '哈姬玩偶',
-    category: 'plush',
-    series: 'soft_plush',
-    isShow: 1,
-    images: [
-      {
-        id: 1,
-        sort: 1,
-        type: 1,
-        url: 'https://placehold.co/600x400',
-        desc: '正版圖片1',
-        source: '官方商店'
-      },
-      {
-        id: 2,
-        sort: 2,
-        type: 2,
-        url: 'https://placehold.co/600x400',
-        desc: '盜版圖片1',
-        source: '淘寶'
-      }
-    ]
-  },
-  {
-    id: 2,
-    role: 'chiikawa',
-    name: '奇卡瓦玩偶',
-    category: 'plush',
-    series: 'cafe',
-    isShow: 1,
-    images: [
-      {
-        id: 3,
-        sort: 1,
-        type: 1,
-        url: 'https://placehold.co/600x400',
-        desc: '正版圖片1',
-        source: '官方商店'
-      }
-    ]
-  },
-  {
-    id: 3,
-    role: 'usagi',
-    name: '兔子鑰匙圈',
-    category: 'keychain',
-    series: 'yomiuri_giants',
-    isShow: 0,
-    images: [
-      {
-        id: 4,
-        sort: 1,
-        type: 1,
-        url: 'https://placehold.co/600x400',
-        desc: '正版圖片1',
-        source: '官方商店'
-      }
-    ]
-  }
-])
+interface PicData {
+  _id?: string
+  name: string
+  nickname: string
+  role: string
+  series: string
+  category: string
+  isShow: number
+  images: {
+    id: number
+    sort: number
+    type: number
+    url: string
+    desc: string
+    source: string
+  }[]
+}
+const picDataList = ref<PicData[]>([])
 
 async function loadData() {
   let data = {
@@ -208,20 +162,20 @@ async function loadData() {
   console.log('搜尋條件:', data)
 
   // TODO: API 實作後替換
-  // try {
-  //   showLoading()
-  //   const res = await store.apiGetPicData(data)
-  //   const result = res.data
-  //   if (result.statusCode === 200) {
-  //     picDataList.value = result.data
-  //   } else {
-  //     console.log('取得圖鑑資料失敗')
-  //   }
-  // } catch (e) {
-  //   console.log(e)
-  // } finally {
-  //   hideLoading()
-  // }
+  try {
+    showLoading()
+    const res = await store.apiGetPicDataList(data)
+    const result = res.data
+    if (result.statusCode === 200) {
+      picDataList.value = result.data
+    } else {
+      console.log('取得圖鑑資料失敗')
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
 }
 
 onMounted(() => {
@@ -229,10 +183,22 @@ onMounted(() => {
 })
 
 /* =============== 新增圖鑑 =============== */
+
+// 目前行為 新增/編輯
+const isEdit = ref(false)
+
+// 計算角色名稱列表，過濾掉全部選項，並合併吉伊卡哇和長野的角色
+const characterNameList = computed(() => {
+  const yikawaChars = roleList.filter((item) => !item.key.includes('all'))
+  const naganoChars = naganoRoleList.filter((item) => !item.key.includes('all'))
+  return [...yikawaChars, ...naganoChars]
+})
+
 const addPicDataModal = ref(false)
 
 // 打開新增圖鑑資料彈窗
 const openAddPicData = () => {
+  isEdit.value = false
   addPicDataModal.value = true
   currentPicData.value = {
     ...emptyPicData,
@@ -253,17 +219,20 @@ const openAddPicData = () => {
 watch(addPicDataModal, (newVal) => {
   if (newVal) {
     document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
   }
 })
 
 // 新增圖鑑資料 預設值
-const emptyPicData = {
+const emptyPicData: PicData = {
+  // _id: 0,
   role: 'chiikawa',
   name: '',
   nickname: '',
   category: 'others',
   series: 'others',
-  isShow: '1',
+  isShow: 1,
   images: [
     {
       id: 1,
@@ -277,7 +246,7 @@ const emptyPicData = {
 }
 
 // 目前編輯的圖鑑資料
-const currentPicData = ref({
+const currentPicData = ref<PicData>({
   ...emptyPicData
 })
 
@@ -291,7 +260,7 @@ const emptyPicDataPic = {
   source: ''
 }
 
-// 新增圖片
+// 新增一筆圖片資料
 const addNewImage = () => {
   const newImage = { ...emptyPicDataPic }
   // 取得目前最大的 id 和 sort
@@ -303,7 +272,7 @@ const addNewImage = () => {
   currentPicData.value.images.push(newImage)
 }
 
-// 刪除圖片
+// 刪除一筆圖片資料
 const removeImage = (index: number) => {
   currentPicData.value.images.splice(index, 1)
   // 重新排序
@@ -312,50 +281,100 @@ const removeImage = (index: number) => {
   })
 }
 
+// 處理圖片上傳
+const handleImageUpload = async (event: Event, index: number) => {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (!file) return
+
+  try {
+    showLoading()
+
+    // 建立 FormData
+    const formData = new FormData()
+    formData.append('file', file)
+
+    // 呼叫上傳 API
+    const res = await store.apiUploadImage(formData)
+    const result = res.data
+
+    if (result.statusCode === 200) {
+      // 更新圖片路徑，使用 result.data.imgUrl
+      currentPicData.value.images[index].url = result.data.imgUrl
+      showToast('圖片上傳成功')
+    } else {
+      showToast('圖片上傳失敗')
+    }
+  } catch (e) {
+    console.error(e)
+    showToast('圖片上傳失敗')
+  } finally {
+    hideLoading()
+
+    // 清空 input 值，允許重複上傳相同圖片
+    ;(event.target as HTMLInputElement).value = ''
+  }
+}
+
 /**
  * 儲存圖鑑資料
  *
  */
-const savePicData = () => {
+const savePicData = async () => {
   console.log('儲存圖鑑資料')
   console.log(currentPicData.value)
 
-  // TODO: API 實作後替換
-  // try {
-  //   showLoading()
-  //   const res = await store.apiGetPicData(data)
-  //   const result = res.data
-  // } catch (e) {
-  //   console.log(e)
-  // } finally {
-  //   hideLoading()
-  // }
+  try {
+    showLoading()
+    console.log('儲存圖鑑資料')
+    console.log(currentPicData.value)
+    if (isEdit.value) {
+      const res = await store.apiUpdatePicData(currentPicData.value)
+      const result = res.data
+      if (result.statusCode === 200) {
+        showToast('編輯圖鑑成功')
+        closeEditPicData()
 
-  // 完全重置為新的物件，包含只有一筆的圖片列表
-  currentPicData.value = {
-    role: 'chiikawa',
-    name: '',
-    nickname: '',
-    category: 'others',
-    series: 'others',
-    isShow: '1',
-    images: [
-      {
-        id: 1,
-        sort: 1,
-        type: 1,
-        url: '',
-        desc: '',
-        source: ''
+        // 重新載入圖鑑列表
+        loadData()
+      } else {
+        showToast('編輯圖鑑失敗')
       }
-    ]
+    } else {
+      const res = await store.apiAddPicData(currentPicData.value)
+
+      const result = res.data
+      if (result.statusCode === 200) {
+        // 關閉彈窗
+        addPicDataModal.value = false
+
+        showToast('新增圖鑑成功')
+
+        // 完全重置為新的物件，包含只有一筆的圖片列表
+        currentPicData.value = {
+          ...emptyPicData,
+          images: [
+            {
+              id: 1,
+              sort: 1,
+              type: 1,
+              url: '',
+              desc: '',
+              source: ''
+            }
+          ]
+        }
+
+        // 重新載入圖鑑列表
+        loadData()
+      } else {
+        showToast('新增圖鑑失敗')
+      }
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
   }
-
-  // 關閉彈窗
-  addPicDataModal.value = false
-
-  // 重新載入圖鑑列表
-  loadData()
 }
 
 /**
@@ -379,7 +398,7 @@ const cancelSavePicData = async () => {
     nickname: '',
     category: 'others',
     series: 'others',
-    isShow: '1',
+    isShow: 1,
     images: [
       {
         id: 1,
@@ -393,6 +412,66 @@ const cancelSavePicData = async () => {
   }
 
   addPicDataModal.value = false
+}
+
+/* =============== 編輯圖鑑 =============== */
+
+const editPicDataModal = ref(false)
+
+const openEditPicData = (item: PicData) => {
+  isEdit.value = true
+  addPicDataModal.value = true
+  currentPicData.value = item
+}
+
+const closeEditPicData = () => {
+  isEdit.value = false
+  addPicDataModal.value = false
+  currentPicData.value = {
+    ...emptyPicData,
+    images: [
+      {
+        id: 1,
+        sort: 1,
+        type: 1,
+        url: '',
+        desc: '',
+        source: ''
+      }
+    ]
+  }
+}
+
+/* =============== 刪除圖鑑 =============== */
+
+const deletePicData = async (item: PicData) => {
+  console.log('刪除圖鑑')
+  console.log(item)
+  const confirmed = await openDialog('注意', '確定要刪除嗎？')
+  if (!confirmed) {
+    return
+  }
+
+  try {
+    showLoading()
+    console.log('刪除圖鑑')
+    console.log(item._id)
+    let data = {
+      _id: item._id
+    }
+    const res = await store.apiDeletePicData(data)
+    const result = res.data
+    if (result.statusCode === 200) {
+      showToast('刪除圖鑑成功')
+      loadData()
+    } else {
+      showToast('刪除圖鑑失敗')
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
 }
 </script>
 
@@ -518,26 +597,50 @@ const cancelSavePicData = async () => {
             <span class="card-text">・</span>
             <span class="card-text">{{ item.isShow === 1 ? '顯示' : '隱藏' }}</span>
           </div>
+
+          <!-- 編輯 刪除 -->
+          <div class="flex justify-end gap-2">
+            <button class="custom-btn-secondary" @click="openEditPicData(item)">編輯</button>
+            <button class="custom-btn-danger" @click="deletePicData(item)">刪除</button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- * 新增圖鑑 modal -->
     <div
-      class="fixed inset-0 z-50 flex h-full items-center justify-center bg-black/30 p-10"
+      class="fixed inset-0 z-50 flex h-full items-start justify-center overflow-y-auto bg-black/30 p-4 pt-10"
       v-if="addPicDataModal"
     >
-      <div class="max-h-[90vh] overflow-auto rounded-lg border-2 border-gray-300 bg-white p-4">
-        <h5 class="mb-4 text-xl font-bold">新增圖鑑</h5>
+      <div class="relative mb-10 w-full max-w-3xl rounded-lg border-2 border-gray-300 bg-white p-4">
+        <h5 class="mb-4 text-xl font-bold">{{ isEdit ? '編輯圖鑑' : '新增圖鑑' }}</h5>
         <div class="modal-body">
           <div class="flex flex-col gap-2">
             <div class="flex flex-col gap-2">
               <label for="role">角色</label>
 
               <select id="role" v-model="currentPicData.role" class="custom-select">
-                <option v-for="item in role" :key="item.key" :value="item.key">
-                  {{ item.name }}
-                </option>
+                <option value="">請選擇角色名稱</option>
+                <!-- 吉伊卡哇角色 -->
+                <optgroup label="吉伊卡哇">
+                  <option
+                    v-for="char in roleList.filter((item) => !item.key.includes('all'))"
+                    :key="char.key"
+                    :value="char.key"
+                  >
+                    {{ t(char.name) }}
+                  </option>
+                </optgroup>
+                <!-- 長野角色 -->
+                <optgroup label="長野">
+                  <option
+                    v-for="char in naganoRoleList.filter((item) => !item.key.includes('all'))"
+                    :key="char.key"
+                    :value="char.key"
+                  >
+                    {{ t(char.name) }}
+                  </option>
+                </optgroup>
               </select>
 
               <label for="name">名稱</label>
@@ -619,7 +722,23 @@ const cancelSavePicData = async () => {
                 <!-- 圖片 -->
                 <div class="flex flex-col gap-2">
                   <label :for="'image-' + index">圖片</label>
-                  <input :id="'image-' + index" type="file" class="custom-input" />
+                  <div class="flex flex-col gap-2">
+                    <!-- 圖片預覽 -->
+                    <img
+                      v-if="image.url"
+                      :src="image.url"
+                      :alt="image.desc || '預覽圖片'"
+                      class="h-auto w-full rounded-lg"
+                    />
+                    <!-- 上傳按鈕 -->
+                    <input
+                      :id="'image-' + index"
+                      type="file"
+                      class="custom-input"
+                      accept="image/*"
+                      @change="(e) => handleImageUpload(e, index)"
+                    />
+                  </div>
                 </div>
 
                 <!-- 描述 -->

@@ -186,18 +186,11 @@ export const APIStore = defineStore({
 
     // 上傳單張圖片
     async apiUploadImage(data: JsonObject) {
-      // const user = await this.userInfo.token
-      // console.log(`token = ${user}`)
       return await axios.post(`${this.api}upload/image`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      // try {
-      // } catch (e) {
-      //   console.log(`apiAddPost error`, e)
-      //   return e
-      // }
     },
 
     // todo 公告 announcements
@@ -266,6 +259,54 @@ export const APIStore = defineStore({
     // 後台 管理員登入
     async apiAdminLogin(data: JsonObject) {
       return await axios.post(`${this.api}users/adminLogin`, data)
+    },
+
+    // ========== 後台 圖鑑 ==========
+    // 後台 新增圖鑑
+    async apiAddPicData(data: JsonObject) {
+      const user = await this.getToken()
+      console.log(`token = ${user}`)
+      return await axios.post(`${this.api}picData/`, data, {
+        headers: {
+          token: user
+        }
+      })
+    },
+
+    // 後台 編輯圖鑑
+    async apiUpdatePicData(data: JsonObject) {
+      const user = await this.getToken()
+      console.log(`token = ${user}`)
+      return await axios.put(`${this.api}picData/${data._id}`, data, {
+        headers: {
+          token: user
+        }
+      })
+    },
+
+    // 後台 刪除圖鑑
+    async apiDeletePicData(data: JsonObject) {
+      const user = await this.getToken()
+      console.log(`token = ${user}`)
+      return await axios.delete(`${this.api}picData/${data._id}`, {
+        headers: {
+          token: user
+        }
+      })
+    },
+
+    // 後台 取得圖鑑列表
+    async apiGetPicDataList(data: JsonObject) {
+      const user = await this.getToken()
+      console.log(`token = ${user}`)
+      return await axios.get(
+        `${this.api}picData/?keyword=${data.keyword}&role=${data.role}&series=${data.series}&category=${data.category}&isShow=${data.isShow}`,
+        {
+          headers: {
+            token: user
+          }
+        }
+      )
     },
 
     // todo 本地端資料處理 localStorage
