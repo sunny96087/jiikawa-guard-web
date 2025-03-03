@@ -19,7 +19,7 @@ export const roleList = [
   { id: 14, key: 'kabutomushi', name: 'yikawa.kabutomushi' },
   { id: 15, key: 'yousei', name: 'yikawa.yousei' },
   { id: 16, key: 'hoshi', name: 'yikawa.hoshi' },
-  { id: 17, key: 'others', name: 'yikawa.others' }
+  { id: 17, key: 'others_chiikawa', name: 'yikawa.others' }
 ]
 
 // 長野角色列表
@@ -29,7 +29,7 @@ export const naganoRoleList = [
   { id: 2, key: 'croquette', name: 'nagano_characters.croquette' },
   { id: 3, key: 'sausage', name: 'nagano_characters.sausage' },
   { id: 4, key: 'pug', name: 'nagano_characters.pug' },
-  { id: 5, key: 'others', name: 'nagano_characters.others' }
+  { id: 5, key: 'others_nagano', name: 'nagano_characters.others' }
 ]
 
 // 系列列表

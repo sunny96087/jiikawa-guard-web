@@ -15,6 +15,20 @@ const { t } = useI18n()
 
 const currentKeyword = ref('') // 關鍵字
 
+/* =============== 角色 =============== */
+const currentRole = ref((route.query.keyword as string) || 'all') // 從 URL 獲取 role 參數，預設為 'all'
+
+// 監聽 route.query.role 的變化
+watch(
+  () => route.query.keyword,
+  (newRole) => {
+    if (newRole) {
+      currentRole.value = newRole as string
+      debouncedLoadData()
+    }
+  }
+)
+
 /* =============== 系列 =============== */
 const currentYikawaSeries = ref('all') // 系列
 const yikawaSeriesList = computed(() => {
@@ -33,16 +47,7 @@ const toggleDropdown = () => {
 const selectOption = (index: number) => {
   currentYikawaSeries.value = yikawaSeriesList.value[index].key
   dropdownSeriesVisible.value = false
-  loadData()
 }
-
-/**
- * 監聽 currentYikawaSeries 的變化，重取資料
- */
-watch(currentYikawaSeries, () => {
-  console.log(`currentYikawaSeries.value = ${currentYikawaSeries.value}`)
-  loadData()
-})
 
 /* =============== 分類 =============== */
 const currentYikawaCategory = ref('all') // 分類
@@ -83,72 +88,102 @@ watch(currentYikawaCategory, () => {
  * 
 
  */
-const yikawaList = ref([
-  {
-    id: 0,
-    series: 'yomiuri_giants',
-    category: 'plush',
-    name: '吉伊卡哇',
-    image: 'https://placehold.co/600x400'
-  },
-  {
-    id: 1,
-    series: 'yomiuri_giants',
-    category: 'plush',
-    name: '吉伊卡哇',
-    image: 'https://placehold.co/600x400'
-  },
-  {
-    id: 2,
-    series: 'yomiuri_giants',
-    category: 'plush',
-    name: '吉伊卡哇',
-    image: 'https://placehold.co/600x400'
-  },
-  {
-    id: 3,
-    series: 'yomiuri_giants',
-    category: 'plush',
-    name: '吉伊卡哇',
-    image: 'https://placehold.co/600x400'
-  }
-])
-async function loadData() {
-  // console.log(`currentSort = ${currentSort}`)
 
+interface PicData {
+  _id?: string
+  name: string
+  nickname: string
+  role: string
+  series: string
+  category: string
+  isShow: number
+  images: {
+    id: number
+    sort: number
+    type: number
+    url: string
+    desc: string
+    source: string
+  }[]
+}
+
+const yikawaList = ref<PicData[]>([])
+
+async function loadData() {
   let data = {
     keyword: currentKeyword.value,
+    role: currentRole.value,
     series: currentYikawaSeries.value,
-    category: currentYikawaCategory.value
+    category: currentYikawaCategory.value,
+    isShow: 1 // 只显示已启用的图鉴
   }
-  console.log(data)
+  console.log('搜尋條件:', data)
 
-  // try {
-  //   showLoading()
-  //   const res = (await store.apiGetPost(data)) as apiResponse
-  //   const result = res.data
-  //   // console.log(`editEvent result = ${JSON.stringify(result)}`)
+  try {
+    showLoading()
+    const res = await store.apiGetPicDataList(data)
+    const result = res.data
+    if (result.statusCode === 200) {
+      yikawaList.value = result.data
+      if (yikawaList.value.length <= 0) {
+        showToast('沒有相關圖鑑，建議換個關鍵字查詢！')
+      }
+    } else {
+      console.log('取得圖鑑資料失敗')
+    }
+  } catch (e) {
+    console.log(e)
+    showToast('取得圖鑑資料失敗')
+  } finally {
+    hideLoading()
+  }
+}
 
-  //   if (result.status === 'success') {
-  //     // 提示成功
-  //     console.log('取得貼文成功')
+// 監聽手動篩選變數變化
+watch(
+  [currentRole, currentYikawaSeries, currentYikawaCategory],
+  ([newRole, newSeries, newCategory]) => {
+    debouncedLoadData()
+  }
+)
 
-  //     // 把資料放到 list
-  //     postList.value = result.data
-  //     // console.log(`postList = ${JSON.stringify(postList.value)}`)
-  //     if (postList.value.length <= 0) {
-  //       showToast('沒有相關文章，建議換個關鍵字查詢！')
-  //     } else {
-  //       // showToast('取得貼文成功')
-  //     }
-  //   } else {
-  //     console.log('取得貼文失敗')
-  //   }
-  // } catch (e) {
-  //   console.log(e)
-  // } finally {
-  //   hideLoading()
-  // }
+// 使用防抖的 loadData 函數
+const debouncedLoadData = debounce(loadData, 300)
+
+// 防抖函數
+function debounce(fn: Function, delay: number) {
+  let timer: NodeJS.Timeout | null = null
+  return function (...args: any[]) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn.apply(null, args)
+    }, delay)
+  }
+}
+
+onMounted(() => {
+  loadData()
+})
+
+/* =============== 圖鑑列表 =============== */
+
+const selectedPic = ref<PicData | null>(null) // 新增：当前选中的图鉴
+const showPicDetail = ref(false) // 新增：控制弹窗显示
+
+// 查看圖鑑詳情
+const openPicDetail = (pic: PicData) => {
+  selectedPic.value = pic
+  showPicDetail.value = true
+  // 禁用背景滚动
+  document.body.style.overflow = 'hidden'
+}
+
+// 關閉圖鑑詳情
+const closePicDetail = () => {
+  selectedPic.value = null
+  showPicDetail.value = false
+  // 恢复背景滚动
+  document.body.style.overflow = 'auto'
 }
 
 // TODO 下面是舊的
@@ -240,13 +275,79 @@ async function loadData() {
 
     <!-- * 圖鑑列表 -->
     <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-      <div class="card" v-for="item in yikawaList" :key="item.id">
+      <div class="card" v-for="item in yikawaList" :key="item._id" @click="openPicDetail(item)">
         <div class="card-body">
-          <div><img :src="item.image" :alt="item.name" class="pic-auto" /></div>
+          <div v-if="item.images && item.images.length > 0">
+            <img :src="item.images[0].url" :alt="item.name" class="pic-auto" />
+          </div>
           <h5 class="card-title">{{ item.name }}</h5>
-          <span class="card-text">{{ item.series }}</span>
-          <span class="card-text">・</span>
-          <span class="card-text">{{ item.category }}</span>
+          <div class="flex flex-wrap gap-2">
+            <span class="card-text">{{ item.nickname }}</span>
+            <span class="card-text">・</span>
+            <span class="card-text">{{
+              yikawaSeriesList.find((series) => series.key === item.series)?.name
+            }}</span>
+            <span class="card-text">・</span>
+            <span class="card-text">{{
+              yikawaCategoriesList.find((category) => category.key === item.category)?.name
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- * 圖鑑詳情 -->
+    <div
+      v-if="showPicDetail"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      @click="closePicDetail"
+    >
+      <div
+        class="mx-4 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6"
+        @click.stop
+      >
+        <div class="mb-4 flex items-start justify-between">
+          <h3 class="text-xl font-bold">{{ selectedPic?.name }}</h3>
+          <button @click="closePicDetail" class="text-gray-500 hover:text-gray-700">
+            <Icon name="material-symbols:close" size="40" />
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <!-- 图片展示区 -->
+          <div class="space-y-4">
+            <div v-for="(image, index) in selectedPic?.images" :key="index">
+              <img :src="image.url" :alt="selectedPic?.name" class="w-full rounded-lg" />
+              <p class="mt-2 text-sm text-gray-600">{{ image.desc }}</p>
+            </div>
+          </div>
+
+          <!-- 信息展示区 -->
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-semibold">暱稱</h4>
+              <p>{{ selectedPic?.nickname }}</p>
+            </div>
+            <div>
+              <h4 class="font-semibold">角色</h4>
+              <p>{{ selectedPic?.role }}</p>
+            </div>
+            <div>
+              <h4 class="font-semibold">系列</h4>
+              <p>
+                {{ yikawaSeriesList.find((series) => series.key === selectedPic?.series)?.name }}
+              </p>
+            </div>
+            <div>
+              <h4 class="font-semibold">分類</h4>
+              <p>
+                {{
+                  yikawaCategoriesList.find((category) => category.key === selectedPic?.category)
+                    ?.name
+                }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
