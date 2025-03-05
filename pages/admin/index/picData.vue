@@ -45,7 +45,7 @@ const { t } = useI18n()
 const currentKeyword = ref('')
 
 /* =============== 角色 =============== */
-const currentRole = ref('all_chiikawa') // 角色
+const currentRole = ref('all') // 角色
 const role = computed(() => {
   return roleList.map((item) => ({
     ...item,
@@ -53,16 +53,42 @@ const role = computed(() => {
   }))
 })
 
-const dropdownRoleVisible = ref(false)
+// const dropdownRoleVisible = ref(false)
 
-const toggleDropdownRole = () => {
-  dropdownRoleVisible.value = !dropdownRoleVisible.value
-}
+// const toggleDropdownRole = () => {
+//   dropdownRoleVisible.value = !dropdownRoleVisible.value
+// }
 
-const selectRoleOption = (index: number) => {
-  const list = role.value
-  currentRole.value = list[index].key
-  dropdownRoleVisible.value = false
+// const selectRoleOption = (index: number) => {
+//   const list = role.value
+//   currentRole.value = list[index].key
+//   dropdownRoleVisible.value = false
+//   loadData()
+// }
+
+// 轉換角色列表，添加多語言支持
+const yikawaRolesList = computed(() => {
+  return roleList
+    .filter((item) => !item.key.includes('all'))
+    .map((item) => ({
+      ...item,
+      name: t(item.name)
+    }))
+})
+
+const naganoRolesList = computed(() => {
+  return naganoRoleList
+    .filter((item) => !item.key.includes('all'))
+    .map((item) => ({
+      ...item,
+      name: t(item.name)
+    }))
+})
+
+// 處理角色選擇
+const handleRoleChange = (event: Event) => {
+  const target = event.target as HTMLSelectElement
+  currentRole.value = target.value
   loadData()
 }
 
@@ -151,13 +177,22 @@ interface PicData {
 }
 const picDataList = ref<PicData[]>([])
 
+const pagination = ref({
+  total: 0,
+  totalPages: 0,
+  currentPage: 1,
+  limit: 20
+})
+
 async function loadData() {
   let data = {
     keyword: currentKeyword.value,
     role: currentRole.value,
     series: currentYikawaSeries.value,
     category: currentYikawaCategory.value,
-    isShow: currentStatus.value
+    isShow: currentStatus.value,
+    page: pagination.value.currentPage,
+    limit: pagination.value.limit
   }
   console.log('搜尋條件:', data)
 
@@ -166,8 +201,15 @@ async function loadData() {
     showLoading()
     const res = await store.apiGetPicDataList(data)
     const result = res.data
+
     if (result.statusCode === 200) {
-      picDataList.value = result.data
+      picDataList.value = result.data.data
+      pagination.value.total = result.data.pagination.total
+      pagination.value.totalPages = result.data.pagination.totalPages
+      pagination.value.currentPage = result.data.pagination.currentPage
+      if (picDataList.value.length <= 0) {
+        showToast('沒有相關圖鑑，建議換個關鍵字查詢！')
+      }
     } else {
       console.log('取得圖鑑資料失敗')
     }
@@ -181,6 +223,12 @@ async function loadData() {
 onMounted(() => {
   loadData()
 })
+
+// 更新分頁處理函數
+const handlePageChange = (page: number) => {
+  pagination.value.currentPage = page
+  loadData()
+}
 
 /* =============== 新增圖鑑 =============== */
 
@@ -480,83 +528,43 @@ const deletePicData = async (item: PicData) => {
     <!-- 篩選列 -->
     <div class="flex flex-col lg:flex-row lg:gap-3">
       <div class="flex flex-col gap-3 sm:flex-row">
-        <!-- 角色選擇 -->
-        <div class="relative w-full min-w-[128px]">
-          <div class="custom-select" @click="toggleDropdownRole">
-            {{ role.find((item) => item.key === currentRole)?.name }}
-            <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
-          </div>
-          <div class="custom-select-options" v-if="dropdownRoleVisible">
-            <div
-              class="option"
-              :class="{ 'option-selected': item.key === currentRole }"
-              v-for="(item, index) in role"
-              :key="index"
-              @click="selectRoleOption(index)"
-            >
-              {{ item.name }}
-            </div>
-          </div>
+        <!-- * 角色選擇 -->
+        <div class="w-full sm:w-[200px]">
+          <select v-model="currentRole" @change="handleRoleChange" class="custom-select">
+            <option value="all">全部角色</option>
+            <!-- 吉伊卡哇角色 -->
+            <optgroup label="吉伊卡哇">
+              <option v-for="char in yikawaRolesList" :key="char.key" :value="char.key">
+                {{ char.name }}
+              </option>
+            </optgroup>
+            <!-- 長野角色 -->
+            <optgroup label="長野">
+              <option v-for="char in naganoRolesList" :key="char.key" :value="char.key">
+                {{ char.name }}
+              </option>
+            </optgroup>
+          </select>
         </div>
 
-        <!-- 系列選擇 -->
-        <div class="relative w-full min-w-[128px]">
-          <div class="custom-select" @click="toggleDropdownSeries">
-            {{ yikawaSeriesList.find((item) => item.key === currentYikawaSeries)?.name }}
-            <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
-          </div>
-          <div class="custom-select-options" v-if="dropdownSeriesVisible">
-            <div
-              class="option"
-              :class="{ 'option-selected': item.key === currentYikawaSeries }"
-              v-for="(item, index) in yikawaSeriesList"
-              :key="index"
-              @click="selectSeriesOption(index)"
-            >
+        <!-- * 系列選擇 -->
+        <div class="w-full sm:w-[200px]">
+          <select v-model="currentYikawaSeries" @change="loadData" class="custom-select">
+            <option v-for="item in yikawaSeriesList" :key="item.key" :value="item.key">
               {{ item.name }}
-            </div>
-          </div>
+            </option>
+          </select>
         </div>
 
-        <!-- 分類選擇 -->
-        <div class="relative w-full min-w-[128px]">
-          <div class="custom-select" @click="toggleDropdownCategory">
-            {{ yikawaCategoriesList.find((item) => item.key === currentYikawaCategory)?.name }}
-            <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
-          </div>
-          <div class="custom-select-options" v-if="dropdownCategoryVisible">
-            <div
-              class="option"
-              :class="{ 'option-selected': item.key === currentYikawaCategory }"
-              v-for="(item, index) in yikawaCategoriesList"
-              :key="index"
-              @click="selectCategoryOption(index)"
-            >
+        <!-- * 分類選擇 -->
+        <div class="w-full sm:w-[200px]">
+          <select v-model="currentYikawaCategory" @change="loadData" class="custom-select">
+            <option v-for="item in yikawaCategoriesList" :key="item.key" :value="item.key">
               {{ item.name }}
-            </div>
-          </div>
-        </div>
-
-        <!-- 狀態選擇 -->
-        <div class="relative w-full min-w-[128px]">
-          <div class="custom-select" @click="toggleDropdownStatus">
-            {{ status.find((item) => item.key === currentStatus)?.name }}
-            <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
-          </div>
-          <div class="custom-select-options" v-if="dropdownStatusVisible">
-            <div
-              class="option"
-              :class="{ 'option-selected': item.key === currentStatus }"
-              v-for="(item, index) in status"
-              :key="index"
-              @click="selectStatusOption(index)"
-            >
-              {{ item.name }}
-            </div>
-          </div>
+            </option>
+          </select>
         </div>
       </div>
-
       <!-- 關鍵字查詢 -->
       <div class="custom-search-input mt-3 grow lg:mt-0">
         <input
@@ -601,11 +609,19 @@ const deletePicData = async (item: PicData) => {
           <!-- 編輯 刪除 -->
           <div class="flex justify-end gap-2">
             <button class="custom-btn-secondary" @click="openEditPicData(item)">編輯</button>
-            <button class="custom-btn-danger" @click="deletePicData(item)">刪除</button>
+            <button class="custom-btn-danger-stroke" @click="deletePicData(item)">刪除</button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- 分頁 -->
+    <Pagination
+      v-if="pagination.totalPages > 1"
+      :current-page="pagination.currentPage"
+      :total-pages="pagination.totalPages"
+      @update:page="handlePageChange"
+    />
 
     <!-- * 新增圖鑑 modal -->
     <div
@@ -788,7 +804,7 @@ const deletePicData = async (item: PicData) => {
 
 <style scoped>
 .card {
-  @apply rounded-lg border-2 border-gray-300 bg-white p-3;
+  @apply rounded-lg border-2 border-gray-300 bg-white/20 p-3;
 }
 
 .card-body {
@@ -796,11 +812,11 @@ const deletePicData = async (item: PicData) => {
 }
 
 .card-title {
-  @apply text-lg font-bold;
+  @apply text-xl font-bold;
 }
 
 .card-text {
-  @apply text-sm text-gray-600;
+  @apply text-lg text-gray-600;
 }
 
 .pic-auto {

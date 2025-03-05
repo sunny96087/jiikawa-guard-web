@@ -109,13 +109,22 @@ interface PicData {
 
 const yikawaList = ref<PicData[]>([])
 
+const pagination = ref({
+  total: 0,
+  totalPages: 0,
+  currentPage: 1,
+  limit: 20
+})
+
 async function loadData() {
   let data = {
     keyword: currentKeyword.value,
     role: currentRole.value,
     series: currentYikawaSeries.value,
     category: currentYikawaCategory.value,
-    isShow: 1 // 只显示已启用的图鉴
+    isShow: 1,
+    page: pagination.value.currentPage,
+    limit: pagination.value.limit
   }
   console.log('搜尋條件:', data)
 
@@ -124,7 +133,10 @@ async function loadData() {
     const res = await store.apiGetPicDataList(data)
     const result = res.data
     if (result.statusCode === 200) {
-      yikawaList.value = result.data
+      yikawaList.value = result.data.data
+      pagination.value.total = result.data.pagination.total
+      pagination.value.totalPages = result.data.pagination.totalPages
+      pagination.value.currentPage = result.data.pagination.currentPage
       if (yikawaList.value.length <= 0) {
         showToast('沒有相關圖鑑，建議換個關鍵字查詢！')
       }
@@ -164,6 +176,12 @@ function debounce(fn: Function, delay: number) {
 onMounted(() => {
   loadData()
 })
+
+// 更新分頁處理函數
+const handlePageChange = (page: number) => {
+  pagination.value.currentPage = page
+  loadData()
+}
 
 /* =============== 圖鑑列表 =============== */
 
@@ -350,6 +368,16 @@ const closePicDetail = () => {
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- * 分頁 -->
+    <div class="mt-8">
+      <Pagination
+        v-if="pagination.totalPages > 0"
+        :current-page="pagination.currentPage"
+        :total-pages="pagination.totalPages"
+        @update:page="handlePageChange"
+      />
     </div>
   </div>
 </template>

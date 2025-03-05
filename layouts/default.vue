@@ -4,9 +4,9 @@ const store = APIStore()
 
 const route = useRoute()
 // 判斷是否在 contribute 頁面
-const hideNavbar = computed(() => {
-  return route.path === '/contribute'
-})
+// const hideNavbar = computed(() => {
+//   return route.path === '/contribute'
+// })
 
 const isContributePage = computed(() => {
   return route.path === '/contribute'
@@ -15,12 +15,12 @@ const isContributePage = computed(() => {
 
 <template>
   <main class="relative min-h-screen w-full">
-    <NewNavbar v-if="!hideNavbar" />
+    <NewNavbar />
     <div class="page-wrapper">
       <div class="grow">
         <NuxtPage />
       </div>
-      <Slidebar v-if="store.isLoggedIn" />
+      <!-- <Slidebar v-if="store.isLoggedIn" /> -->
     </div>
     <Footer />
 

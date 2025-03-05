@@ -55,7 +55,7 @@ const yikawaList = computed(() => {
 })
 
 const currentKeyword = computed(() => {
-  return (route.query.keyword as string) || 'all_chiikawa'
+  return (route.query.keyword as string) || ''
 })
 
 const isYikawaListExpanded = ref(true) // 控制列表展開/收合的狀態
@@ -74,7 +74,7 @@ const naganoList = computed(() => {
 })
 
 const currentNaganoKeyword = computed(() => {
-  return (route.query.keyword as string) || 'all_nagano'
+  return (route.query.keyword as string) || ''
 })
 
 const isNaganoListExpanded = ref(false) // 控制列表展開/收合的狀態
