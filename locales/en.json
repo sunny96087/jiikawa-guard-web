@@ -1,6 +1,20 @@
 {
-  "title": {},
+  "title": {
+    "home": "Home",
+    "login": "Login",
+    "register": "Register",
+    "contact": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "common_sites": "Common Sites",
+    "buy_doll_map": "Doll Shopping Map",
+    "announcement": "Announcements",
+    "yikawa_identification": "Yikawa Characters",
+    "chiikawa_identification": "Chiikawa Characters",
+    "submit": "Submit"
+  },
   "yikawa": {
+    "all": "All Characters",
     "chiikawa": "Chiikawa",
     "hachiware": "Hachiware",
     "usagi": "Usagi",
@@ -54,7 +68,8 @@
     "restaurant": "Restaurant Series",
     "magical_girl": "Magical Girl",
     "bakery": "Bakery",
-    "limited_edition": "Limited Edition"
+    "limited_edition": "Limited Edition",
+    "others": "Others"
   },
   "yikawa_categories": {
     "all": "All Categories",
@@ -66,10 +81,16 @@
     "others": "Others"
   },
   "nagano_characters": {
+    "all": "All Characters",
     "pug": "Pug",
     "croquette": "Croquette",
     "sausage": "Sausage",
     "polar_bear": "Polar Bear",
     "others": "Others"
+  },
+  "yikawa_status": {
+    "all": "All Status",
+    "show": "Show",
+    "hide": "Hide"
   }
 }

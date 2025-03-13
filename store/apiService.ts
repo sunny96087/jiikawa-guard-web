@@ -12,11 +12,11 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      api: 'http://localhost:3666/',
+      // api: 'http://localhost:3666/',
 
       // 線上
       // api: 'https://express-community.onrender.com/',
-      // api: 'https://jiikawa-guard-api.onrender.com/',
+      api: 'https://jiikawa-guard-api.onrender.com/',
 
       //   userInfo: null as JsonObject | null,
       //   tokenInfo: {

@@ -310,23 +310,37 @@ const emptyPicDataPic = {
 
 // 新增一筆圖片資料
 const addNewImage = () => {
-  const newImage = { ...emptyPicDataPic }
-  // 取得目前最大的 id 和 sort
   const maxId = Math.max(...currentPicData.value.images.map((img) => img.id), 0)
   const maxSort = Math.max(...currentPicData.value.images.map((img) => img.sort), 0)
 
-  newImage.id = maxId + 1
-  newImage.sort = maxSort + 1
-  currentPicData.value.images.push(newImage)
+  const newImage = {
+    ...emptyPicDataPic,
+    id: maxId + 1,
+    sort: maxSort + 1
+  }
+
+  // 使用展開運算符確保響應式更新
+  currentPicData.value = {
+    ...currentPicData.value,
+    images: [...currentPicData.value.images, newImage]
+  }
 }
 
 // 刪除一筆圖片資料
 const removeImage = (index: number) => {
-  currentPicData.value.images.splice(index, 1)
+  const updatedImages = [...currentPicData.value.images]
+  updatedImages.splice(index, 1)
+
   // 重新排序
-  currentPicData.value.images.forEach((image, idx) => {
+  updatedImages.forEach((image, idx) => {
     image.sort = idx + 1
   })
+
+  // 使用展開運算符確保響應式更新
+  currentPicData.value = {
+    ...currentPicData.value,
+    images: updatedImages
+  }
 }
 
 // 處理圖片上傳
@@ -336,18 +350,23 @@ const handleImageUpload = async (event: Event, index: number) => {
 
   try {
     showLoading()
-
-    // 建立 FormData
     const formData = new FormData()
     formData.append('file', file)
 
-    // 呼叫上傳 API
     const res = await store.apiUploadImage(formData)
     const result = res.data
 
     if (result.statusCode === 200) {
-      // 更新圖片路徑，使用 result.data.imgUrl
-      currentPicData.value.images[index].url = result.data.imgUrl
+      // 更新圖片網址
+      const updatedImages = [...currentPicData.value.images]
+      updatedImages[index] = {
+        ...updatedImages[index],
+        url: result.data.imgUrl
+      }
+      currentPicData.value = {
+        ...currentPicData.value,
+        images: updatedImages
+      }
       showToast('圖片上傳成功')
     } else {
       showToast('圖片上傳失敗')
@@ -357,9 +376,21 @@ const handleImageUpload = async (event: Event, index: number) => {
     showToast('圖片上傳失敗')
   } finally {
     hideLoading()
-
-    // 清空 input 值，允許重複上傳相同圖片
+    // 清空 input 值
     ;(event.target as HTMLInputElement).value = ''
+  }
+}
+
+// 可以添加一個清除圖片的輔助函數
+const clearImage = (index: number) => {
+  const updatedImages = [...currentPicData.value.images]
+  updatedImages[index] = {
+    ...updatedImages[index],
+    url: ''
+  }
+  currentPicData.value = {
+    ...currentPicData.value,
+    images: updatedImages
   }
 }
 
@@ -418,8 +449,9 @@ const savePicData = async () => {
         showToast('新增圖鑑失敗')
       }
     }
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    showToast(e.response.data.message)
   } finally {
     hideLoading()
   }
@@ -504,7 +536,7 @@ const deletePicData = async (item: PicData) => {
     showLoading()
     console.log('刪除圖鑑')
     console.log(item._id)
-    let data = {
+    let data: any = {
       _id: item._id
     }
     const res = await store.apiDeletePicData(data)
@@ -517,6 +549,7 @@ const deletePicData = async (item: PicData) => {
     }
   } catch (e) {
     console.log(e)
+    showToast('刪除圖鑑失敗')
   } finally {
     hideLoading()
   }
@@ -709,86 +742,137 @@ const deletePicData = async (item: PicData) => {
                 <h4 class="mb-2 mt-4 text-lg font-bold">圖片列表</h4>
                 <button class="custom-btn-secondary" @click="addNewImage">新增一筆圖片</button>
               </div>
-              <div
-                v-for="(image, index) in currentPicData.images"
-                :key="image.id"
-                class="mb-4 flex flex-col gap-2 rounded-lg border-2 border-gray-300 p-4"
-              >
-                <div class="flex justify-end">
-                  <button
-                    class="text-red-500 hover:text-red-700"
-                    @click="removeImage(index)"
-                    :disabled="currentPicData.images.length === 1"
-                  >
-                    <Icon name="material-symbols:delete-outline" size="24" />
-                  </button>
-                </div>
+              <TransitionGroup name="list" tag="div">
+                <div
+                  v-for="(image, index) in currentPicData.images"
+                  :key="image.id"
+                  class="mb-4 flex flex-col gap-2 rounded-lg border-2 border-gray-300 p-4"
+                >
+                  <div class="flex justify-end">
+                    <button
+                      class="text-red-500 hover:text-red-700"
+                      @click="removeImage(index)"
+                      :disabled="currentPicData.images.length === 1"
+                    >
+                      <Icon name="material-symbols:delete-outline" size="24" />
+                    </button>
+                  </div>
 
-                <!-- sort -->
-                <div class="flex flex-col gap-2">
-                  <label :for="'sort-' + index">排序</label>
-                  <input
-                    :id="'sort-' + index"
-                    v-model="image.sort"
-                    type="number"
-                    class="custom-input"
-                  />
-                </div>
-
-                <!-- 圖片 -->
-                <div class="flex flex-col gap-2">
-                  <label :for="'image-' + index">圖片</label>
+                  <!-- sort -->
                   <div class="flex flex-col gap-2">
-                    <!-- 圖片預覽 -->
-                    <img
-                      v-if="image.url"
-                      :src="image.url"
-                      :alt="image.desc || '預覽圖片'"
-                      class="h-auto w-full rounded-lg"
-                    />
-                    <!-- 上傳按鈕 -->
+                    <label :for="'sort-' + index">排序</label>
                     <input
-                      :id="'image-' + index"
-                      type="file"
+                      :id="'sort-' + index"
+                      v-model="image.sort"
+                      type="number"
                       class="custom-input"
-                      accept="image/*"
-                      @change="(e) => handleImageUpload(e, index)"
                     />
                   </div>
-                </div>
 
-                <!-- 描述 -->
-                <div class="flex flex-col gap-2">
-                  <label :for="'desc-' + index">描述</label>
-                  <input
-                    :id="'desc-' + index"
-                    v-model="image.desc"
-                    type="text"
-                    class="custom-input"
-                  />
-                </div>
+                  <!-- 圖片 -->
+                  <!-- <div class="flex flex-col gap-2">
+                    <label :for="'image-' + index">圖片</label>
+                    <div class="flex flex-col gap-2">
+              
+                      <img
+                        v-if="image.url"
+                        :src="image.url"
+                        :alt="image.desc || '預覽圖片'"
+                        class="h-auto w-full rounded-lg"
+                      />
+          
+                      <input
+                        :id="'image-' + index"
+                        type="file"
+                        class="custom-input"
+                        accept="image/*"
+                        @change="(e) => handleImageUpload(e, index)"
+                      />
+                    </div>
+                  </div> -->
 
-                <!-- 提供者 -->
-                <div class="flex flex-col gap-2">
-                  <label :for="'source-' + index">提供者</label>
-                  <input
-                    :id="'source-' + index"
-                    v-model="image.source"
-                    type="text"
-                    class="custom-input"
-                  />
-                </div>
+                  <!-- 修改圖片上傳部分的模板 -->
+                  <!-- 圖片 -->
+                  <div class="flex flex-col gap-2">
+                    <label>圖片</label>
+                    <div class="flex flex-col gap-4">
+                      <!-- 上傳按鈕和圖片網址輸入框 -->
+                      <div class="flex items-center gap-2">
+                        <div class="relative">
+                          <input
+                            :id="'image-' + index"
+                            type="file"
+                            class="hidden"
+                            accept="image/*"
+                            @change="(e) => handleImageUpload(e, index)"
+                          />
+                          <label
+                            :for="'image-' + index"
+                            class="custom-btn-secondary flex cursor-pointer items-center gap-2"
+                          >
+                            <Icon name="material-symbols:upload" size="20" />
+                            <span>上傳圖片</span>
+                          </label>
+                        </div>
+                        <input
+                          v-model="image.url"
+                          type="text"
+                          class="custom-input flex-1"
+                          placeholder="或輸入圖片網址..."
+                        />
+                      </div>
 
-                <!-- 類型 -->
-                <div class="flex flex-col gap-2">
-                  <label :for="'type-' + index">類型</label>
-                  <select :id="'type-' + index" v-model="image.type" class="custom-select">
-                    <option value="1">正版</option>
-                    <option value="2">盜版</option>
-                    <option value="3">正盜版比對</option>
-                  </select>
+                      <!-- 圖片預覽 -->
+                      <div v-if="image.url" class="relative rounded-lg border border-gray-200 p-2">
+                        <img
+                          :src="image.url"
+                          :alt="image.desc || '預覽圖片'"
+                          class="h-auto w-full rounded-lg"
+                        />
+                        <!-- 移除圖片按鈕 -->
+                        <button
+                          @click="image.url = ''"
+                          class="cus-hover absolute right-4 top-4 flex items-center justify-center rounded-full bg-white/80 p-1 text-gray-600 hover:bg-white hover:text-red-500"
+                        >
+                          <Icon name="material-symbols:close" size="32" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 描述 -->
+                  <div class="flex flex-col gap-2">
+                    <label :for="'desc-' + index">描述</label>
+                    <input
+                      :id="'desc-' + index"
+                      v-model="image.desc"
+                      type="text"
+                      class="custom-input"
+                    />
+                  </div>
+
+                  <!-- 提供者 -->
+                  <div class="flex flex-col gap-2">
+                    <label :for="'source-' + index">提供者</label>
+                    <input
+                      :id="'source-' + index"
+                      v-model="image.source"
+                      type="text"
+                      class="custom-input"
+                    />
+                  </div>
+
+                  <!-- 類型 -->
+                  <div class="flex flex-col gap-2">
+                    <label :for="'type-' + index">類型</label>
+                    <select :id="'type-' + index" v-model="image.type" class="custom-select">
+                      <option value="1">正版</option>
+                      <option value="2">盜版</option>
+                      <option value="3">正盜版比對</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
+              </TransitionGroup>
 
               <div class="flex justify-end gap-4">
                 <button class="custom-btn-gray" @click="cancelSavePicData">取消</button>
@@ -821,5 +905,21 @@ const deletePicData = async (item: PicData) => {
 
 .pic-auto {
   @apply h-auto w-full rounded-lg object-cover;
+}
+
+/* 添加過渡動畫效果 */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-move {
+  transition: transform 0.3s ease;
 }
 </style>

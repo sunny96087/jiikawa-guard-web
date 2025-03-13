@@ -47,7 +47,7 @@ onMounted(() => {
 }
 
 .bg {
-  background: url('~/assets/images/bg.png') no-repeat center center;
+  background: url('~/assets/images/admin-bg.png') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Azeret Mono';

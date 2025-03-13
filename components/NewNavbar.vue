@@ -46,6 +46,11 @@ watch(showSidebar, (newVal) => {
   }
 })
 
+// 組件消除時釋放
+onBeforeUnmount(() => {
+  document.body.style.overflow = 'auto'
+})
+
 // 將 yikawaList 改為計算屬性
 const yikawaList = computed(() => {
   return roleList.map((item) => ({

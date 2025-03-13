@@ -9,7 +9,7 @@ const route = useRoute()
 
 import { showToast, openDialog, showLoading, hideLoading } from '~/store/eventBus'
 import { useI18n } from 'vue-i18n'
-import { seriesList, categoryList } from '~/constants/yikawa'
+import { seriesList, categoryList, roleList } from '~/constants/yikawa'
 
 const { t } = useI18n()
 
@@ -29,6 +29,13 @@ watch(
   }
 )
 
+/* =============== 角色 =============== */
+const roleInfoList = computed(() => {
+  return roleList.map((item) => ({
+    ...item,
+    name: t(item.name)
+  }))
+})
 /* =============== 系列 =============== */
 const currentYikawaSeries = ref('all') // 系列
 const yikawaSeriesList = computed(() => {
@@ -204,6 +211,13 @@ const closePicDetail = () => {
   document.body.style.overflow = 'auto'
 }
 
+// 組件消除時釋放
+onBeforeUnmount(() => {
+  selectedPic.value = null
+  showPicDetail.value = false
+  document.body.style.overflow = 'auto'
+})
+
 // TODO 下面是舊的
 
 // onMounted(() => {
@@ -292,23 +306,38 @@ const closePicDetail = () => {
     </div>
 
     <!-- * 圖鑑列表 -->
-    <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-      <div class="card" v-for="item in yikawaList" :key="item._id" @click="openPicDetail(item)">
-        <div class="card-body">
-          <div v-if="item.images && item.images.length > 0">
+    <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        class="card h-full cursor-pointer"
+        v-for="item in yikawaList"
+        :key="item._id"
+        @click="openPicDetail(item)"
+      >
+        <div
+          class="flex h-full flex-col overflow-hidden rounded-xl border border-gray-300 bg-white/60"
+        >
+          <div
+            v-if="item.images && item.images.length > 0"
+            class="flex h-[240px] w-full items-center justify-center overflow-hidden"
+          >
             <img :src="item.images[0].url" :alt="item.name" class="pic-auto" />
           </div>
-          <h5 class="card-title">{{ item.name }}</h5>
-          <div class="flex flex-wrap gap-2">
-            <span class="card-text">{{ item.nickname }}</span>
-            <span class="card-text">・</span>
-            <span class="card-text">{{
-              yikawaSeriesList.find((series) => series.key === item.series)?.name
-            }}</span>
-            <span class="card-text">・</span>
-            <span class="card-text">{{
-              yikawaCategoriesList.find((category) => category.key === item.category)?.name
-            }}</span>
+          <div class="flex flex-1 flex-col p-4">
+            <h5 class="mb-2 text-lg font-semibold">{{ item.name }}</h5>
+            <div class="flex flex-col gap-2">
+              <span v-if="item.nickname" class="flex items-center gap-2 text-sm">
+                <Icon name="ph:pencil-line" size="16" class="text-primary5" />
+                {{ item.nickname }}
+              </span>
+              <span class="flex items-center gap-2 text-sm">
+                <Icon name="ph:squares-four" size="16" class="text-primary5" />
+                {{ yikawaSeriesList.find((series) => series.key === item.series)?.name }}
+              </span>
+              <span class="flex items-center gap-2 text-sm">
+                <Icon name="ph:rabbit" size="16" class="text-primary5" />
+                {{ yikawaCategoriesList.find((category) => category.key === item.category)?.name }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -321,7 +350,7 @@ const closePicDetail = () => {
       @click="closePicDetail"
     >
       <div
-        class="mx-4 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6"
+        class="mx-4 max-h-[90vh] w-full max-w-[1000px] overflow-y-auto rounded-lg bg-white p-6"
         @click.stop
       >
         <div class="mb-4 flex items-start justify-between">
@@ -331,24 +360,15 @@ const closePicDetail = () => {
           </button>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <!-- 图片展示区 -->
-          <div class="space-y-4">
-            <div v-for="(image, index) in selectedPic?.images" :key="index">
-              <img :src="image.url" :alt="selectedPic?.name" class="w-full rounded-lg" />
-              <p class="mt-2 text-sm text-gray-600">{{ image.desc }}</p>
-            </div>
-          </div>
-
-          <!-- 信息展示区 -->
-          <div class="space-y-4">
-            <div>
+        <div class="grid grid-cols-1 gap-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div v-if="selectedPic?.nickname">
               <h4 class="font-semibold">暱稱</h4>
               <p>{{ selectedPic?.nickname }}</p>
             </div>
             <div>
               <h4 class="font-semibold">角色</h4>
-              <p>{{ selectedPic?.role }}</p>
+              <p>{{ roleInfoList.find((role) => role.key === selectedPic?.role)?.name }}</p>
             </div>
             <div>
               <h4 class="font-semibold">系列</h4>
@@ -364,6 +384,23 @@ const closePicDetail = () => {
                     ?.name
                 }}
               </p>
+            </div>
+          </div>
+
+          <hr class="my-4 border-gray-300" />
+
+          <div class="space-y-4">
+            <div
+              v-for="(image, index) in selectedPic?.images"
+              :key="index"
+              class="flex flex-col gap-2 overflow-hidden rounded-xl border border-gray-300"
+            >
+              <div class="relative overflow-hidden">
+                <img :src="image.url" :alt="selectedPic?.name" class="pic-auto" />
+                <img src="~/assets/images/watermark.png" alt="" class="absolute bottom-0 right-0" />
+              </div>
+              <p class="mt-[2px] pr-2 text-right text-sm text-gray-600">圖源：{{ image.source }}</p>
+              <p class="p-2 text-lg text-gray-600">{{ image.desc }}</p>
             </div>
           </div>
         </div>

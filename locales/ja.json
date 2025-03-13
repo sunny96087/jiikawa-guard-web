@@ -1,5 +1,20 @@
 {
+  "title": {
+    "home": "ホーム",
+    "login": "ログイン",
+    "register": "新規登録",
+    "contact": "お問い合わせ",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "common_sites": "よく使うサイト",
+    "buy_doll_map": "人形ショッピングマップ",
+    "announcement": "お知らせ",
+    "yikawa_identification": "吉伊卡哇キャラクター",
+    "chiikawa_identification": "自嘲熊キャラクター",
+    "submit": "投稿する"
+  },
   "yikawa": {
+    "all": "すべてのキャラクター",
     "chiikawa": "ちいかわ",
     "hachiware": "ハチワレ",
     "usagi": "うさぎ",
@@ -15,7 +30,8 @@
     "yoroisan": "鎧さん",
     "kabutomushi": "カブトムシ",
     "yousei": "妖精",
-    "hoshi": "星"
+    "hoshi": "星",
+    "others": "その他"
   },
   "yikawa_series": {
     "all": "すべてのシリーズ",
@@ -52,7 +68,8 @@
     "restaurant": "レストランシリーズ",
     "magical_girl": "魔法少女",
     "bakery": "パン屋",
-    "limited_edition": "地域限定"
+    "limited_edition": "地域限定",
+    "others": "その他"
   },
   "yikawa_categories": {
     "all": "すべてのカテゴリ",
@@ -68,6 +85,12 @@
     "croquette": "コロッケ",
     "sausage": "ソーセージ",
     "polar_bear": "白クマ",
-    "others": "その他"
+    "others": "その他",
+    "all": "すべての役割"
+  },
+  "yikawa_status": {
+    "all": "すべてのステータス",
+    "show": "表示",
+    "hide": "非表示"
   }
 }
