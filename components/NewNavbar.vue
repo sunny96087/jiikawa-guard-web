@@ -92,7 +92,12 @@ const toggleNaganoList = () => {
 <template>
   <div class="sticky top-0 z-20 border-b-2 border-gray-600 bg-white/70 py-3 backdrop-blur-[5px]">
     <div class="relative m-auto flex max-w-[1200px] items-center justify-between px-6">
-      <nuxtLink to="/" class="text-[22px]">新吉伊卡哇鑑定站</nuxtLink>
+      <nuxtLink to="/" class="flex items-center gap-2 text-[18px] sm:text-[22px]">
+        <div class="h-10 w-10">
+          <img src="~/assets/images/jii-logo.png" alt="logo" class="pic-auto" />
+        </div>
+        {{ t('title.web_name') }}
+      </nuxtLink>
 
       <div class="flex items-center justify-center gap-4">
         <button
