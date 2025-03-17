@@ -316,7 +316,7 @@ onBeforeUnmount(() => {
       <div class="custom-search-input grow">
         <input
           type="text"
-          placeholder="搜尋貼文"
+          placeholder="搜尋關鍵字"
           v-model="currentKeyword"
           @keyup.enter="loadData"
         />
