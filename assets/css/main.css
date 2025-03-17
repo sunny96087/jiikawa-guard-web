@@ -17,6 +17,12 @@ body {
   height: 100%;
   /* vertical-align: top; */
   object-fit: cover;
+
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-select: none;
 }
 
 .custom-select {

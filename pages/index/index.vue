@@ -342,9 +342,10 @@ onBeforeUnmount(() => {
         >
           <div
             v-if="item.images && item.images.length > 0"
-            class="flex h-[240px] w-full items-center justify-center overflow-hidden"
+            class="relative flex h-[240px] w-full items-center justify-center overflow-hidden"
           >
             <img :src="item.images[0].url" :alt="item.name" class="pic-auto" />
+            <CommonWatermark />
           </div>
           <div class="flex flex-1 flex-col p-4">
             <h5 class="mb-2 text-lg font-semibold">{{ item.name }}</h5>
@@ -426,11 +427,11 @@ onBeforeUnmount(() => {
             >
               <div class="relative overflow-hidden">
                 <img :src="image.url" :alt="selectedPic?.name" class="pic-auto" />
-                <img src="~/assets/images/watermark.png" alt="" class="absolute bottom-0 right-0" />
+                <CommonWatermark />
               </div>
               <div class="px-2 pb-2 pt-1">
                 <div class="flex justify-between gap-2 text-sm text-gray-600">
-                  <p class="">
+                  <p class="" :class="{ 'text-red-500': image.type === 2 }">
                     {{ imageTypeInfoList.find((item) => item.key === image.type)?.name }}
                   </p>
                   <p v-if="image.source">圖源：{{ image.source }}</p>

@@ -353,7 +353,7 @@ const handleImageUpload = async (event: Event, index: number) => {
     const formData = new FormData()
     formData.append('file', file)
 
-    const res = await store.apiUploadImage(formData)
+    const res = await store.apiUploadImage(formData as any)
     const result = res.data
 
     if (result.statusCode === 200) {
@@ -619,9 +619,12 @@ const deletePicData = async (item: PicData) => {
 
     <!-- 圖鑑列表 -->
     <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-      <div class="card" v-for="item in picDataList" :key="item.id">
+      <div class="card" v-for="item in picDataList" :key="item._id">
         <div class="card-body">
-          <div v-if="item.images && item.images.length > 0">
+          <div
+            v-if="item.images && item.images.length > 0"
+            class="relative h-[240px] items-center justify-center overflow-hidden"
+          >
             <img :src="item.images[0].url" :alt="item.name" class="pic-auto" />
           </div>
           <h5 class="card-title">{{ item.name }}</h5>
@@ -701,7 +704,7 @@ const deletePicData = async (item: PicData) => {
                 class="custom-input"
               />
 
-              <label for="nickname">社群常見暱稱 (多個請用、分隔開來)</label>
+              <label for="nickname">社群常見暱稱 (多個請用, 分隔開來)</label>
               <input
                 id="nickname"
                 v-model="currentPicData.nickname"
@@ -901,10 +904,6 @@ const deletePicData = async (item: PicData) => {
 
 .card-text {
   @apply text-lg text-gray-600;
-}
-
-.pic-auto {
-  @apply h-auto w-full rounded-lg object-cover;
 }
 
 /* 添加過渡動畫效果 */

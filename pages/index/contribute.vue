@@ -82,30 +82,54 @@ const copyFormat = () => {
         <hr class="col-span-2 my-2 border-yellow-500/50" />
 
         <p class="mb-2 text-[18px] font-bold text-red-500">※ 可疑處用紅圈標示以及文字描述</p>
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 items-start gap-4">
           <p class="col-span-2">1. 吊牌文字：「販售禁止」字型差異</p>
           <p>盜版</p>
           <p>正版</p>
-          <img src="~/assets/images/contribute/ex1-bad.png" alt="盜版" />
-          <img src="~/assets/images/contribute/ex1.png" alt="正版" />
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex1-bad.png" alt="盜版" />
+            <CommonWatermark />
+          </div>
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex1.png" alt="正版" />
+            <CommonWatermark />
+          </div>
           <hr class="col-span-2 my-2 border-yellow-500/50" />
           <p class="col-span-2">2. 頭頂縫線不整齊</p>
           <p>盜版</p>
           <p>正版</p>
-          <img src="~/assets/images/contribute/ex2-bad.png" alt="盜版" />
-          <img src="~/assets/images/contribute/ex2.png" alt="正版" />
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex2-bad.png" alt="盜版" />
+            <CommonWatermark />
+          </div>
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex2.png" alt="正版" />
+            <CommonWatermark />
+          </div>
           <hr class="col-span-2 my-2 border-yellow-500/50" />
           <p class="col-span-2">3. 臉看起來怪怪的</p>
           <p>盜版</p>
           <p>正版</p>
-          <img src="~/assets/images/contribute/ex3-bad.png" alt="盜版" />
-          <img src="~/assets/images/contribute/ex3.png" alt="正版" />
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex3-bad.png" alt="盜版" />
+            <CommonWatermark />
+          </div>
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex3.png" alt="正版" />
+            <CommonWatermark />
+          </div>
           <hr class="col-span-2 my-2 border-yellow-500/50" />
           <p class="col-span-2">4. 標籤文字不同</p>
           <p>盜版</p>
           <p>正版</p>
-          <img src="~/assets/images/contribute/ex4-bad.png" alt="盜版" />
-          <img src="~/assets/images/contribute/ex4.png" alt="正版" />
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex4-bad.png" alt="盜版" />
+            <CommonWatermark />
+          </div>
+          <div class="relative overflow-hidden">
+            <img src="~/assets/images/contribute/ex4.png" alt="正版" />
+            <CommonWatermark />
+          </div>
         </div>
         <hr class="my-4" />
 
@@ -163,11 +187,10 @@ const copyFormat = () => {
       <br />
       <p>
         歡迎加入我們的
-        <a href="https://discord.gg/9Aw8Dg8P6W" target="_blank" class="text-primary6"
-          >Discord 群組</a
-        >
+        <a href="https://discord.gg/8zB3abj9" target="_blank" class="text-primary6">Discord 群組</a>
         一起討論吉伊卡哇！
       </p>
+      <p class="text-sm text-gray-500">(沒加成很容易過期，如果過期可以私訊我拿連結 🙌)</p>
 
       <br />
       <p>
@@ -180,6 +203,7 @@ const copyFormat = () => {
           賣貨便 </a
         >，都是正版的從社團五花大綁買來的複數娃 💫
       </p>
+      <p class="text-sm text-gray-500">(如果賣場沒開可能是售完或是換個方式賣 XD)</p>
     </div>
   </div>
 </template>
