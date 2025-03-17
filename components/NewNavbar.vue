@@ -255,13 +255,20 @@ const toggleNaganoList = () => {
 
             <hr class="my-4 border-[#cfcfcf]" />
 
-            <div class="flex gap-1 text-gray-600">
-              <NuxtLink to="/contact" class="cus-hover">{{ t('title.contact') }}</NuxtLink>
-              ·
-              <NuxtLink to="/commonSites" class="cus-hover">{{ t('title.common_sites') }}</NuxtLink>
-              ·
+            <div class="flex flex-col gap-1 text-gray-600">
+              <NuxtLink to="/contact" class="cus-hover py-2 hover:text-primary5">{{
+                t('title.contact')
+              }}</NuxtLink>
+              <NuxtLink to="/commonSites" class="cus-hover py-2 hover:text-primary5">{{
+                t('title.common_sites')
+              }}</NuxtLink>
               <!-- * DC 連結 -->
-              <a href="https://discord.gg/dhzzb8dG" target="_blank" class="cus-hover">Discord</a>
+              <a
+                href="https://discord.gg/dhzzb8dG"
+                target="_blank"
+                class="cus-hover py-2 hover:text-primary5"
+                >Discord</a
+              >
             </div>
           </div>
         </div>

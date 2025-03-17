@@ -55,7 +55,7 @@ export const seriesList = [
   { id: 18, key: 'forest_mushroom', name: 'yikawa_series.forest_mushroom' },
   { id: 19, key: 'fluffy_grass', name: 'yikawa_series.fluffy_grass' },
   { id: 20, key: 'aquarium', name: 'yikawa_series.aquarium' },
-  { id: 21, key: 'unspecified', name: 'yikawa_series.unspecified' },
+  // { id: 21, key: 'unspecified', name: 'yikawa_series.unspecified' },
   { id: 22, key: 'birthday', name: 'yikawa_series.birthday' },
   { id: 23, key: 'pajama_party', name: 'yikawa_series.pajama_party' },
   { id: 24, key: 'christmas', name: 'yikawa_series.christmas' },
@@ -68,7 +68,8 @@ export const seriesList = [
   { id: 31, key: 'magical_girl', name: 'yikawa_series.magical_girl' },
   { id: 32, key: 'bakery', name: 'yikawa_series.bakery' },
   { id: 33, key: 'limited_edition', name: 'yikawa_series.limited_edition' },
-  { id: 34, key: 'others', name: 'yikawa_series.others' }
+  { id: 34, key: 'mlb', name: 'yikawa_series.mlb' },
+  { id: 35, key: 'others', name: 'yikawa_series.others' }
 ]
 
 // 分類列表
@@ -78,7 +79,7 @@ export const categoryList = [
   { id: 2, key: 'keychain', name: 'yikawa_categories.keychain' },
   { id: 3, key: 'cushion', name: 'yikawa_categories.cushion' },
   { id: 4, key: 's_shape', name: 'yikawa_categories.s_shape' },
-  { id: 5, key: 'tapestry', name: 'yikawa_categories.tapestry' },
+  // { id: 5, key: 'tapestry', name: 'yikawa_categories.tapestry' },
   { id: 6, key: 'others', name: 'yikawa_categories.others' }
 ]
 
@@ -87,6 +88,13 @@ export const statusList = [
   { id: 0, key: 'all', name: 'yikawa_status.all' },
   { id: 1, key: '1', name: 'yikawa_status.show' },
   { id: 2, key: '0', name: 'yikawa_status.hide' }
+]
+
+// 圖片類型列表
+export const imageTypeList = [
+  { id: 0, key: 1, name: 'image_type.official' },
+  { id: 1, key: 2, name: 'image_type.counterfeit' },
+  { id: 2, key: 3, name: 'image_type.comparison' }
 ]
 
 // 添加 ListItem 類型定義

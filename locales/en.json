@@ -56,7 +56,6 @@
     "forest_mushroom": "Forest Mushroom",
     "fluffy_grass": "Fluffy Grass Series",
     "aquarium": "Aquarium Series",
-    "unspecified": "Unspecified",
     "birthday": "Birthday Series",
     "pajama_party": "Pajama Party",
     "christmas": "Christmas Series",
@@ -69,15 +68,15 @@
     "magical_girl": "Magical Girl",
     "bakery": "Bakery",
     "limited_edition": "Limited Edition",
+    "mlb": "MLB",
     "others": "Others"
   },
   "yikawa_categories": {
     "all": "All Categories",
-    "plush": "Plush",
     "keychain": "Keychain",
-    "cushion": "Cushion",
     "s_shape": "S-shape",
-    "tapestry": "Tapestry / Table Hanging",
+    "plush": "Plush",
+    "cushion": "Cushion",
     "others": "Others"
   },
   "nagano_characters": {
@@ -92,5 +91,43 @@
     "all": "All Status",
     "show": "Show",
     "hide": "Hide"
+  },
+  "image_type": {
+    "official": "Official",
+    "counterfeit": "Counterfeit",
+    "comparison": "Official vs Counterfeit"
+  },
+  "common_sites_list": {
+    "goto_button": "Go to (Open in new tab)",
+    "sites": {
+      "chiikawa_market": {
+        "name": "Chiikawa Official",
+        "description": "Chiikawa Official website, provides the latest news and product information"
+      },
+      "chiikawa_market_mogumogu": {
+        "name": "Chiikawa Official Mogumogu",
+        "description": "Chiikawa Official Mogumogu website, provides the latest news and product information"
+      },
+      "nagano_market": {
+        "name": "Nagano Characters | Nagano Market Official",
+        "description": "Nagano Characters | Nagano Market Official website, provides the latest news and product information"
+      },
+      "chiikawa_identification": {
+        "name": "Chiikawa Identification Guide",
+        "description": "Chiikawa Identification Guide website (because the author stopped updating, so I started developing this website), different authors, please don't misunderstand ><"
+      },
+      "naganobearrof": {
+        "name": "White Bear Identification Guide",
+        "description": "White Bear Identification Guide website, different authors."
+      },
+      "chiikawa_tribe": {
+        "name": "Chiikawa Encyclopedia",
+        "description": "Chiikawa Encyclopedia website, updates the latest Chiikawa products (has collected most of the Chiikawa Market's charms, dolls, S dolls, etc.)"
+      },
+      "chiikawa_info": {
+        "name": "Official Information Website",
+        "description": "New products, specialty stores, events, etc., must be viewed before going to Japan"
+      }
+    }
   }
 }

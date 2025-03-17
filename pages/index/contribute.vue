@@ -118,12 +118,12 @@ const copyFormat = () => {
     </div>
 
     <!-- 格式區 -->
-    <div class="border-primary4 bg-primary1/40 mb-8 rounded-xl border-2 p-6">
+    <div class="mb-8 rounded-xl border-2 border-primary4 bg-primary1/40 p-6">
       <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h2 class="text-xl font-bold">提供格式（點擊右側按鈕可複製）</h2>
         <button
           @click="copyFormat"
-          class="bg-primary3 hover:bg-primary4 flex items-center gap-2 rounded-lg px-4 py-2 font-medium transition-all"
+          class="flex items-center gap-2 rounded-lg bg-primary3 px-4 py-2 font-medium transition-all hover:bg-primary4"
         >
           <Icon name="ph:copy" size="20" />
           複製格式
@@ -140,7 +140,7 @@ const copyFormat = () => {
       <div class="grid gap-4 sm:grid-cols-2">
         <a
           href="mailto:yu13142013@gmail.com?subject=吉伊卡哇真偽鑒定資料提供"
-          class="border-primary6 text-primary6 hover:bg-primary1 cus-hover flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-[18px] font-medium"
+          class="cus-hover flex items-center justify-center gap-2 rounded-lg border-2 border-primary6 p-3 text-[18px] font-medium text-primary6 hover:bg-primary1"
         >
           <Icon name="ph:envelope" size="24" />
           寄信給我
@@ -148,7 +148,7 @@ const copyFormat = () => {
         <a
           href="https://www.facebook.com/sunny.uy.9/"
           target="_blank"
-          class="border-primary6 text-primary6 hover:bg-primary1 cus-hover flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-[18px] font-medium"
+          class="cus-hover flex items-center justify-center gap-2 rounded-lg border-2 border-primary6 p-3 text-[18px] font-medium text-primary6 hover:bg-primary1"
         >
           <Icon name="ph:facebook-logo" size="24" />
           FB 私訊我
@@ -163,7 +163,9 @@ const copyFormat = () => {
       <br />
       <p>
         歡迎加入我們的
-        <a href="https://discord.gg/dhzzb8dG" target="_blank" class="text-primary6">Discord 群組</a>
+        <a href="https://discord.gg/9Aw8Dg8P6W" target="_blank" class="text-primary6"
+          >Discord 群組</a
+        >
         一起討論吉伊卡哇！
       </p>
 
@@ -171,7 +173,7 @@ const copyFormat = () => {
       <p>
         想買娃也可以參考作者的
         <a
-          href="https://myship.7-11.com.tw/general/detail/GM2502122523678"
+          href="https://myship.7-11.com.tw/general/detail/GM2502223131674"
           target="_blank"
           class="text-primary6"
         >

@@ -56,7 +56,6 @@
     "forest_mushroom": "森のきのこ",
     "fluffy_grass": "ふわふわ草シリーズ",
     "aquarium": "水族館シリーズ",
-    "unspecified": "未指定",
     "birthday": "誕生日シリーズ",
     "pajama_party": "パジャマパーティー",
     "christmas": "クリスマスシリーズ",
@@ -69,28 +68,66 @@
     "magical_girl": "魔法少女",
     "bakery": "パン屋",
     "limited_edition": "地域限定",
+    "mlb": "MLB バックシャツ",
     "others": "その他"
   },
   "yikawa_categories": {
     "all": "すべてのカテゴリ",
-    "plush": "おもちゃ",
     "keychain": "チェーン",
-    "cushion": "ティッシュ",
     "s_shape": "S キャラクター",
-    "tapestry": "幔幕 / テーブルホールディング",
+    "plush": "おもちゃ",
+    "cushion": "クッション",
     "others": "その他"
   },
   "nagano_characters": {
-    "pug": "パグ",
+    "all": "すべてのキャラクター",
+    "polar_bear": "白クマ",
     "croquette": "コロッケ",
     "sausage": "ソーセージ",
-    "polar_bear": "白クマ",
-    "others": "その他",
-    "all": "すべての役割"
+    "pug": "パグ",
+    "others": "その他"
   },
   "yikawa_status": {
     "all": "すべてのステータス",
     "show": "表示",
     "hide": "非表示"
+  },
+  "image_type": {
+    "official": "正規品",
+    "counterfeit": "偽物",
+    "comparison": "正規品と偽物の比較"
+  },
+  "common_sites_list": {
+    "goto_button": "ここをクリック(新しいタブで開く)",
+    "sites": {
+      "chiikawa_market": {
+        "name": "吉伊カワ公式サイト",
+        "description": "吉伊カワ公式サイト，提供最新消息和商品資訊"
+      },
+      "chiikawa_market_mogumogu": {
+        "name": "吉伊カワ公式サイト_川越本舖",
+        "description": "吉伊カワ公式サイト_川越本舖，提供最新消息和商品資訊"
+      },
+      "nagano_market": {
+        "name": "長野キャラクター | ナガノマーケット公式通販",
+        "description": "長野キャラクター | ナガノマーケット公式通販，提供最新消息和商品資訊"
+      },
+      "chiikawa_identification": {
+        "name": "吉伊カワ鑑定ガイド",
+        "description": "吉伊カワ鑑定ガイド網站 (因為此作者停更，所以才會著手開発このサイト)，作者が違うので、誤解しないでください ><"
+      },
+      "naganobearrof": {
+        "name": "白熊鑑定ガイド",
+        "description": "白熊鑑定ガイド網站，作者が違うので、誤解しないでください ><"
+      },
+      "chiikawa_tribe": {
+        "name": "吉伊カワ図鑑",
+        "description": "吉伊カワ図鑑網站，不定時更新吉伊カワ最新商品(已收納Chiikawa Market大部份吊飾，玩偶，S娃等資料)"
+      },
+      "chiikawa_info": {
+        "name": "公式整合資訊網",
+        "description": "新品、専門店、活動があるので、日本に行く前に必ず見てください"
+      }
+    }
   }
 }

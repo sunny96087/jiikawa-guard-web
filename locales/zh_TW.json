@@ -15,21 +15,21 @@
   },
   "yikawa": {
     "all": "全部角色",
-    "chiikawa": "小可愛",
+    "chiikawa": "吉伊",
     "hachiware": "小八",
     "usagi": "兔兔",
-    "momonga": "飛鼠",
+    "momonga": "小桃",
     "kurimanjuu": "栗子饅頭",
-    "rakko": "海獺",
-    "shisa": "獅子",
-    "kani": "螃蟹",
-    "ano_ko": "那個孩子",
+    "rakko": "海獺師傅",
+    "shisa": "師薩",
+    "kani": "古本",
+    "ano_ko": "那孩子",
     "daistrong": "大強",
-    "sou": "頌",
+    "sou": "奧德",
     "chimera": "奇美拉",
-    "yoroisan": "盔甲人",
+    "yoroisan": "鎧甲人",
     "kabutomushi": "甲蟲",
-    "yousei": "妖精",
+    "yousei": "哥布林",
     "hoshi": "小星星",
     "others": "其他"
   },
@@ -37,11 +37,11 @@
     "all": "所有系列",
     "yomiuri_giants": "讀賣巨人隊",
     "soft_plush": "軟綿綿系列",
-    "cafe": "Café",
-    "chiikawa_land": "Chiikawa Land",
-    "mogumogu": "Mogumogu",
-    "nagano_market": "Nagano Market",
-    "sanrio": "Sanrio",
+    "cafe": "咖啡廳系列",
+    "chiikawa_land": "吉伊卡哇樂園",
+    "mogumogu": "毛茸茸系列",
+    "nagano_market": "長野市場",
+    "sanrio": "三麗鷗",
     "ichiban_kuji": "一番賞",
     "rairai_dining": "來來飯店",
     "winter_scarf": "冬日圍巾",
@@ -56,7 +56,6 @@
     "forest_mushroom": "森林蘑菇",
     "fluffy_grass": "毛茸茸系列",
     "aquarium": "水族館系列",
-    "unspecified": "無指定",
     "birthday": "生日系列",
     "pajama_party": "睡衣派對",
     "christmas": "聖誕系列",
@@ -69,15 +68,15 @@
     "magical_girl": "魔法少女",
     "bakery": "麵包店",
     "limited_edition": "地區限定",
+    "mlb": "MLB",
     "others": "其他"
   },
   "yikawa_categories": {
     "all": "所有分類",
-    "plush": "公仔",
     "keychain": "吊飾",
+    "s_shape": "S娃",
+    "plush": "公仔",
     "cushion": "抱枕",
-    "s_shape": "S 姬",
-    "tapestry": "幔幕 / 桌面掛",
     "others": "其他"
   },
   "nagano_characters": {
@@ -92,5 +91,43 @@
     "all": "所有狀態",
     "show": "顯示",
     "hide": "隱藏"
+  },
+  "image_type": {
+    "official": "正版",
+    "counterfeit": "盜版",
+    "comparison": "正盜版比對"
+  },
+  "common_sites_list": {
+    "goto_button": "點我前往(開新分頁)",
+    "sites": {
+      "chiikawa_market": {
+        "name": "吉伊卡哇官方",
+        "description": "吉伊卡哇官方網站，提供最新消息和商品資訊"
+      },
+      "chiikawa_market_mogumogu": {
+        "name": "吉伊卡哇官方 川越本舖",
+        "description": "吉伊卡哇官方 川越本舖網站，提供最新消息和商品資訊"
+      },
+      "nagano_market": {
+        "name": "長野角色 ナガノマーケット公式通販",
+        "description": "長野角色 ナガノマーケット公式通販網站，提供最新消息和商品資訊"
+      },
+      "chiikawa_identification": {
+        "name": "Chiikawa鑑定指南",
+        "description": "Chiikawa鑑定指南網站 (因為此作者停更，所以才會著手開發這個網站)，作者不同人，請不要誤會 ><"
+      },
+      "naganobearrof": {
+        "name": "白熊鑑定指南",
+        "description": "白熊鑑定指南網站，作者不同人。"
+      },
+      "chiikawa_tribe": {
+        "name": "吉伊卡哇圖鑑",
+        "description": "吉伊卡哇圖鑑網站，不定時更新吉伊卡哇最新商品(已收納Chiikawa Market大部份吊飾，玩偶，S娃等資料)"
+      },
+      "chiikawa_info": {
+        "name": "官方整合資訊網",
+        "description": "新品、專門店、活動都有，去日本前必看"
+      }
+    }
   }
 }

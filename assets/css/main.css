@@ -113,6 +113,10 @@ input:focus {
   @apply flex transform items-center justify-center rounded-full border px-5 py-3 font-bold text-black duration-200;
 }
 
+.custom-btn-small {
+  @apply flex transform items-center justify-center rounded-full border px-3 py-2 font-bold text-black duration-200;
+}
+
 .custom-btn-primary {
   @apply flex transform items-center justify-center rounded-full border border-primary5 bg-primary5 px-5 py-3 font-bold text-black duration-200;
   /* box-shadow: -2px 2px 0px #000400; */
@@ -124,6 +128,10 @@ input:focus {
 .custom-btn-secondary {
   @apply flex transform items-center justify-center rounded-full border border-primary6 bg-primary1 px-5 py-3 font-bold text-primary6 duration-200;
   /* box-shadow: -2px 2px 0px #000400; */
+}
+
+.custom-btn-secondary:hover {
+  @apply bg-primary2;
 }
 
 .custom-btn-gray {

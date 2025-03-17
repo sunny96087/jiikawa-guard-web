@@ -9,7 +9,7 @@ const route = useRoute()
 
 import { showToast, openDialog, showLoading, hideLoading } from '~/store/eventBus'
 import { useI18n } from 'vue-i18n'
-import { seriesList, categoryList, roleList } from '~/constants/yikawa'
+import { seriesList, categoryList, roleList, imageTypeList } from '~/constants/yikawa'
 
 const { t } = useI18n()
 
@@ -36,6 +36,26 @@ const roleInfoList = computed(() => {
     name: t(item.name)
   }))
 })
+
+const isBearSeries = computed(() => {
+  return (
+    currentRole.value === 'all_nagano' ||
+    currentRole.value === 'polar_bear' ||
+    currentRole.value === 'croquette' ||
+    currentRole.value === 'sausage' ||
+    currentRole.value === 'pug' ||
+    currentRole.value === 'others_nagano'
+  )
+})
+
+/* =============== 圖片類型 =============== */
+const imageTypeInfoList = computed(() => {
+  return imageTypeList.map((item) => ({
+    ...item,
+    name: t(item.name)
+  }))
+})
+
 /* =============== 系列 =============== */
 const currentYikawaSeries = ref('all') // 系列
 const yikawaSeriesList = computed(() => {
@@ -127,7 +147,7 @@ async function loadData() {
   let data = {
     keyword: currentKeyword.value,
     role: currentRole.value,
-    series: currentYikawaSeries.value,
+    series: isBearSeries.value ? 'all' : currentYikawaSeries.value,
     category: currentYikawaCategory.value,
     isShow: 1,
     page: pagination.value.currentPage,
@@ -254,7 +274,8 @@ onBeforeUnmount(() => {
   <div class="">
     <div class="flex flex-wrap gap-3">
       <!-- * 系列選擇 -->
-      <div class="relative w-full sm:w-[200px]">
+      <!-- ? 如果目前角色是白熊系列的不要顯示 -->
+      <div v-if="!isBearSeries" class="relative w-full sm:w-[280px]">
         <div class="custom-select" @click="toggleDropdown">
           {{ yikawaSeriesList.find((item: any) => item.key === currentYikawaSeries)?.name }}
           <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
@@ -273,7 +294,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- * 分類選擇 -->
-      <div class="relative w-full sm:w-[200px]">
+      <div class="relative w-full sm:w-[280px]">
         <div class="custom-select" @click="toggleDropdownCategory">
           {{ yikawaCategoriesList.find((item: any) => item.key === currentYikawaCategory)?.name }}
           <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
@@ -306,7 +327,10 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- * 圖鑑列表 -->
-    <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div
+      v-if="yikawaList.length > 0"
+      class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+    >
       <div
         class="card h-full cursor-pointer"
         v-for="item in yikawaList"
@@ -341,6 +365,11 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- * 無資料 -->
+    <div v-else class="mt-4 text-center text-gray-500">
+      <p>暫時沒有搜集到相關圖鑑，建議換個關鍵字查詢！</p>
     </div>
 
     <!-- * 圖鑑詳情 -->
@@ -389,18 +418,25 @@ onBeforeUnmount(() => {
 
           <hr class="my-4 border-gray-300" />
 
-          <div class="space-y-4">
+          <div class="flex flex-col gap-4">
             <div
               v-for="(image, index) in selectedPic?.images"
               :key="index"
-              class="flex flex-col gap-2 overflow-hidden rounded-xl border border-gray-300"
+              class="overflow-hidden rounded-xl border border-gray-300"
             >
               <div class="relative overflow-hidden">
                 <img :src="image.url" :alt="selectedPic?.name" class="pic-auto" />
                 <img src="~/assets/images/watermark.png" alt="" class="absolute bottom-0 right-0" />
               </div>
-              <p class="mt-[2px] pr-2 text-right text-sm text-gray-600">圖源：{{ image.source }}</p>
-              <p class="p-2 text-lg text-gray-600">{{ image.desc }}</p>
+              <div class="px-2 pb-2 pt-1">
+                <div class="flex justify-between gap-2 text-sm text-gray-600">
+                  <p class="">
+                    {{ imageTypeInfoList.find((item) => item.key === image.type)?.name }}
+                  </p>
+                  <p v-if="image.source">圖源：{{ image.source }}</p>
+                </div>
+                <p class="mt-1 text-lg text-gray-600">{{ image.desc }}</p>
+              </div>
             </div>
           </div>
         </div>
