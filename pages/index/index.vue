@@ -9,11 +9,15 @@ const route = useRoute()
 
 import { showToast, openDialog, showLoading, hideLoading } from '~/store/eventBus'
 import { useI18n } from 'vue-i18n'
-import { seriesList, categoryList, roleList, imageTypeList } from '~/constants/yikawa'
+import {
+  seriesList,
+  categoryList,
+  roleList,
+  imageTypeList,
+  naganoRoleList
+} from '~/constants/yikawa'
 
 const { t } = useI18n()
-
-const currentKeyword = ref('') // 關鍵字
 
 /* =============== 角色 =============== */
 const currentRole = ref((route.query.keyword as string) || 'all') // 從 URL 獲取 role 參數，預設為 'all'
@@ -28,6 +32,43 @@ watch(
     }
   }
 )
+
+const allRoles = computed(() => {
+  const merged = new Map()
+
+  // 先加入吉伊卡哇角色
+  roleList.forEach((role) => {
+    merged.set(role.key, {
+      ...role,
+      type: 'yikawa',
+      translatedName: t(role.name) // 預先翻譯名稱
+    })
+  })
+
+  // 再加入長野角色
+  naganoRoleList.forEach((role) => {
+    if (merged.has(role.key)) {
+      console.warn(`重複的角色 key: ${role.key}`)
+    }
+    merged.set(role.key, {
+      ...role,
+      type: 'nagano',
+      translatedName: t(role.name) // 預先翻譯名稱
+    })
+  })
+
+  return Array.from(merged.values())
+})
+
+const findRoleName = (roleKey: string | undefined) => {
+  if (!roleKey) return '未知角色'
+  const role = allRoles.value.find((role) => role.key === roleKey)
+  if (!role) {
+    console.warn(`找不到角色: ${roleKey}`)
+    return '未知角色'
+  }
+  return role.translatedName
+}
 
 /* =============== 角色 =============== */
 const roleInfoList = computed(() => {
@@ -104,6 +145,39 @@ watch(currentYikawaCategory, () => {
   loadData()
 })
 
+// 添加點擊外部關閉的處理函數
+const handleClickOutside = (event: MouseEvent) => {
+  const seriesSelect = document.querySelector('#series-select')
+  const categorySelect = document.querySelector('#category-select')
+
+  // 檢查點擊是否在下拉選單外部
+  if (seriesSelect && !seriesSelect.contains(event.target as Node)) {
+    dropdownSeriesVisible.value = false
+  }
+
+  if (categorySelect && !categorySelect.contains(event.target as Node)) {
+    dropdownCategoryVisible.value = false
+  }
+}
+
+// 在組件掛載時添加事件監聽
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+// 在組件卸載時移除事件監聽
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+/* =============== 關鍵字 =============== */
+const currentKeyword = ref('') // 關鍵字
+
+const clearKeyword = () => {
+  currentKeyword.value = ''
+  loadData()
+}
+
 /* =============== 圖鑑列表 =============== */
 
 /**
@@ -143,6 +217,8 @@ const pagination = ref({
   limit: 20
 })
 
+const isPicDataLoading = ref(false)
+
 async function loadData() {
   let data = {
     keyword: currentKeyword.value,
@@ -156,7 +232,7 @@ async function loadData() {
   console.log('搜尋條件:', data)
 
   try {
-    showLoading()
+    isPicDataLoading.value = true
     const res = await store.apiGetPicDataList(data)
     const result = res.data
     if (result.statusCode === 200) {
@@ -174,7 +250,7 @@ async function loadData() {
     console.log(e)
     showToast('取得圖鑑資料失敗')
   } finally {
-    hideLoading()
+    isPicDataLoading.value = false
   }
 }
 
@@ -275,7 +351,7 @@ onBeforeUnmount(() => {
     <div class="flex flex-wrap gap-3">
       <!-- * 系列選擇 -->
       <!-- ? 如果目前角色是白熊系列的不要顯示 -->
-      <div v-if="!isBearSeries" class="relative w-full sm:w-[280px]">
+      <div v-if="!isBearSeries" class="relative w-full sm:w-[280px]" id="series-select">
         <div class="custom-select" @click="toggleDropdown">
           {{ yikawaSeriesList.find((item: any) => item.key === currentYikawaSeries)?.name }}
           <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
@@ -294,7 +370,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- * 分類選擇 -->
-      <div class="relative w-full sm:w-[280px]">
+      <div class="relative w-full sm:w-[280px]" id="category-select">
         <div class="custom-select" @click="toggleDropdownCategory">
           {{ yikawaCategoriesList.find((item: any) => item.key === currentYikawaCategory)?.name }}
           <Icon name="material-symbols:keyboard-arrow-down" size="26"></Icon>
@@ -313,22 +389,65 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- * 關鍵字查詢 -->
-      <div class="custom-search-input grow">
+      <div class="custom-search-input relative grow">
         <input
           type="text"
           placeholder="搜尋關鍵字"
           v-model="currentKeyword"
           @keyup.enter="loadData"
         />
+        <!-- 清除 -->
+        <div
+          v-if="currentKeyword"
+          @click="clearKeyword"
+          class="absolute right-[62px] top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+        >
+          <Icon name="material-symbols:close" size="24"></Icon>
+        </div>
         <button @click="loadData">
           <Icon name="material-symbols:search" size="28"></Icon>
         </button>
       </div>
     </div>
 
+    <!-- * 骨架屏加載效果 -->
+    <div
+      v-if="isPicDataLoading"
+      class="mt-4 grid grid-cols-1 gap-4 opacity-80 md:grid-cols-2 lg:grid-cols-3"
+    >
+      <div
+        v-for="i in 5"
+        :key="i"
+        class="overflow-hidden rounded-xl border border-gray-300 bg-white/60"
+      >
+        <!-- 圖片區域骨架 -->
+        <div class="skeleton-box h-[240px] w-full"></div>
+        <!-- 內容區域骨架 -->
+        <div class="flex flex-col p-4">
+          <!-- 標題骨架 -->
+          <div class="skeleton-box mb-2 h-6 w-3/4 rounded"></div>
+          <!-- 內容行骨架 -->
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+              <div class="skeleton-box h-4 w-4 rounded"></div>
+              <div class="skeleton-box h-4 w-1/2 rounded"></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="skeleton-box h-4 w-4 rounded"></div>
+              <div class="skeleton-box h-4 w-2/3 rounded"></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="skeleton-box h-4 w-4 rounded"></div>
+              <div class="skeleton-box h-4 w-1/2 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- * 圖鑑列表 -->
     <div
-      v-if="yikawaList.length > 0"
+      v-if="yikawaList.length > 0 && !isPicDataLoading"
       class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
     >
       <div
@@ -369,7 +488,10 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- * 無資料 -->
-    <div v-else class="mt-4 text-center text-gray-500">
+    <div
+      v-else-if="!isPicDataLoading && yikawaList.length <= 0"
+      class="mt-4 text-center text-gray-500"
+    >
       <p>暫時沒有搜集到相關圖鑑，建議換個關鍵字查詢！</p>
     </div>
 
@@ -392,14 +514,15 @@ onBeforeUnmount(() => {
 
         <div class="grid grid-cols-1 gap-4">
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <h4 class="font-semibold">角色</h4>
+              <p>{{ findRoleName(selectedPic?.role) }}</p>
+            </div>
             <div v-if="selectedPic?.nickname">
               <h4 class="font-semibold">暱稱</h4>
               <p>{{ selectedPic?.nickname }}</p>
             </div>
-            <div>
-              <h4 class="font-semibold">角色</h4>
-              <p>{{ roleInfoList.find((role) => role.key === selectedPic?.role)?.name }}</p>
-            </div>
+
             <div>
               <h4 class="font-semibold">系列</h4>
               <p>
@@ -440,6 +563,10 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </div>
+
+          <div class="mt-3 flex justify-center">
+            <button @click="closePicDetail" class="custom-btn-secondary">關閉彈窗</button>
+          </div>
         </div>
       </div>
     </div>
@@ -460,5 +587,37 @@ onBeforeUnmount(() => {
   /* 點讚後的樣式 */
   background-color: #007bff;
   color: white;
+}
+
+/* 骨架屏 */
+.skeleton-box {
+  position: relative;
+  background-color: #e5e7eb;
+  overflow: hidden;
+}
+
+.skeleton-box::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2.5s infinite;
+  transition: transform 0.3s ease-out;
+  content: '';
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
 </style>

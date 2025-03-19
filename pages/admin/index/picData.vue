@@ -53,6 +53,43 @@ const role = computed(() => {
   }))
 })
 
+const allRoles = computed(() => {
+  const merged = new Map()
+
+  // 先加入吉伊卡哇角色
+  roleList.forEach((role) => {
+    merged.set(role.key, {
+      ...role,
+      type: 'yikawa',
+      translatedName: t(role.name) // 預先翻譯名稱
+    })
+  })
+
+  // 再加入長野角色
+  naganoRoleList.forEach((role) => {
+    if (merged.has(role.key)) {
+      console.warn(`重複的角色 key: ${role.key}`)
+    }
+    merged.set(role.key, {
+      ...role,
+      type: 'nagano',
+      translatedName: t(role.name) // 預先翻譯名稱
+    })
+  })
+
+  return Array.from(merged.values())
+})
+
+const findRoleName = (roleKey: string) => {
+  if (!roleKey) return '未知角色'
+  const role = allRoles.value.find((role) => role.key === roleKey)
+  if (!role) {
+    console.warn(`找不到角色: ${roleKey}`)
+    return '未知角色'
+  }
+  return role.translatedName // 直接使用預先翻譯的名稱
+}
+
 // const dropdownRoleVisible = ref(false)
 
 // const toggleDropdownRole = () => {
@@ -629,7 +666,7 @@ const deletePicData = async (item: PicData) => {
           </div>
           <h5 class="card-title">{{ item.name }}</h5>
           <div class="flex flex-wrap gap-2">
-            <span class="card-text">{{ role.find((role) => role.key === item.role)?.name }}</span>
+            <span class="card-text">{{ findRoleName(item.role) }}</span>
             <span class="card-text">・</span>
             <span class="card-text">{{
               yikawaSeriesList.find((series) => series.key === item.series)?.name
@@ -720,7 +757,7 @@ const deletePicData = async (item: PicData) => {
                 </option>
               </select>
 
-              <label for="series">系列</label>
+              <label for="series">系列 (長野角色不用分系列)</label>
               <select id="series" v-model="currentPicData.series" class="custom-select">
                 <option v-for="item in yikawaSeriesList" :key="item.key" :value="item.key">
                   {{ item.name }}
