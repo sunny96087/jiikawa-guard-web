@@ -78,16 +78,6 @@ export default defineNuxtConfig({
   vite: {
     plugins: [ckeditor5({ theme: require.resolve('@ckeditor/ckeditor5-theme-lark') })]
   },
-  app: {
-    head: {
-      meta: [
-        {
-          name: 'google-site-verification',
-          content: 'ezYJ7T0oDpkV9XX_IDz-OqV3T187C5qDx_QGGu4igJo'
-        }
-      ]
-    }
-  },
 
   compatibilityDate: '2025-02-12'
 })

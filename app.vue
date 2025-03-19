@@ -39,7 +39,7 @@ useHead({
     { property: 'og:site_name', content: '吉伊卡哇鑑定' },
     {
       name: 'google-site-verification',
-      content: 'q3j8Fywtb4CR5wt7ksjQlMPHXEPnepbCW3tmO_dIMGQ'
+      content: 'ezYJ7T0oDpkV9XX_IDz-OqV3T187C5qDx_QGGu4igJo'
     },
     { property: 'og:image', content: 'https://r2.2fishs.com/images/twitter.webp' }
   ],
