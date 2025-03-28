@@ -196,7 +196,7 @@ const copyFormat = () => {
       <p>
         想買娃也可以參考作者的
         <a
-          href="https://myship.7-11.com.tw/general/detail/GM2502223131674"
+          href="https://myship.7-11.com.tw/general/detail/GM2502122523678"
           target="_blank"
           class="text-primary6"
         >

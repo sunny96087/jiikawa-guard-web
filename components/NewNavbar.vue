@@ -268,12 +268,12 @@ const toggleNaganoList = () => {
                 t('title.common_sites')
               }}</NuxtLink>
               <!-- * DC 連結 -->
-              <!-- <a
-                href="https://discord.gg/dhzzb8dG"
+              <a
+                href="https://discord.gg/gzaH6ThM"
                 target="_blank"
                 class="cus-hover py-2 hover:text-primary5"
                 >Discord</a
-              > -->
+              >
             </div>
           </div>
         </div>

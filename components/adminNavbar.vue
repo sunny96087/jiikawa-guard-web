@@ -28,12 +28,17 @@ onMounted(() => {
     store.setUserInfo(userInfo)
   }
 })
+
+// 路由有變化時關閉選單
+watch(router.currentRoute, () => {
+  menu.value = false
+})
 </script>
 
 <template>
   <div class="sticky top-0 z-20 border-b-[3px] border-black bg-white py-3">
     <div class="relative m-auto flex max-w-[1200px] items-center justify-between px-6">
-      <nuxtLink to="/" class="paytone-one-regular text-[26px]"
+      <nuxtLink to="/admin/picData" class="paytone-one-regular text-[26px]"
         >新版吉伊卡哇鑑定站 後台管理</nuxtLink
       >
 

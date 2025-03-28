@@ -1,6 +1,6 @@
 <script setup>
 useHead({
-  title: '新吉伊卡哇鑒定站',
+  title: '新吉伊卡哇鑑定站',
   // titleTemplate: (title) => (title ? `${title} - 新版吉伊卡哇鑒定網站` : '新版吉伊卡哇鑒定網站'),
   htmlAttrs: {
     lang: 'zh-TW'

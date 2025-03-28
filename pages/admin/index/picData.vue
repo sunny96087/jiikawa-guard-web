@@ -538,7 +538,14 @@ const editPicDataModal = ref(false)
 const openEditPicData = (item: PicData) => {
   isEdit.value = true
   addPicDataModal.value = true
-  currentPicData.value = item
+  // 重新創建圖片數據，確保每個圖片都有唯一的 id
+  currentPicData.value = {
+    ...item,
+    images: item.images.map((img, index) => ({
+      ...img,
+      id: index + 1 // 重新分配 id
+    }))
+  }
 }
 
 const closeEditPicData = () => {
@@ -943,16 +950,20 @@ const deletePicData = async (item: PicData) => {
   @apply text-lg text-gray-600;
 }
 
-/* 添加過渡動畫效果 */
+/* 修改過渡動畫效果 */
 .list-enter-active,
 .list-leave-active {
   transition: all 0.3s ease;
 }
 
-.list-enter-from,
-.list-leave-to {
+.list-enter-from {
   opacity: 0;
   transform: translateY(30px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 
 .list-move {
